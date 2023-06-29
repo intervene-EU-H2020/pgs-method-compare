@@ -2,10 +2,127 @@
 title: "prs-method-document"
 ---
 
-This is a Quarto website.
-
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+# Figure 1A (to do: come up with a fancier name)
 
 ```{r}
-1 + 1
+#| echo: false
+#| warning: false
+
+library(prsCompaR)
+
+library(readr)
+library(dplyr)
+
+data(metrics)
+
+metrics %>%
+  group_by(bbid, ancestry, phenotype) %>%
+  mutate(best_method = ifelse(BETA == max(BETA), TRUE, FALSE)) -> metrics_annotated
+
+endpoints <- unique(metrics$phenotype)
+prs_methods <- unique(metrics$method)
+plot_data <- metrics_annotated
+
+ojs_define(plot_data)
+ojs_define(endpoints)
+```
+
+```{ojs}
+//| code-fold: true
+//| panel: input
+
+viewof biobanks = Inputs.checkbox(
+  new Map( 
+  [["UK Biobank", "ukbb"], ["Estonia Biobank", "ebb"], ["Genes & Health", "gnh"], ["FinnGenn", "finngen"], ["HUNT", "hunt"]]),
+  { value: ["ukbb", "ebb", "gnh", "finngen", "hunt"], 
+  label: "Biobank:",
+  sort: true, 
+  unique: true }
+)
+
+viewof methods = Inputs.checkbox(
+  ["dbslmm", "sbayesr", "lassosum", "prscs", "ldpres2", "megaprs", "pt.clump", "UKBB.EnsPRS"],
+  { value: ["dbslmm", "sbayesr", "lassosum", "prscs", "ldpres2", "megaprs", "pt.clump", "UKBB.EnsPRS"],
+  label: "Method:",
+  sort: true, 
+  unique: true }
+)
+
+viewof ancestries = Inputs.checkbox(
+  ["EUR", "SAS"],
+  { label: "Ancestry",
+    value: ["EUR", "SAS"],
+    sort: true,
+    unique: true
+})
+
+viewof endpoint = Inputs.select(endpoints, {value: "T2D", label: "Endpoint:"})
+
+viewof best_method = Inputs.toggle({label: "Show best method:", value: false})
+
+viewof fontsize = Inputs.range([12, 40], {step: 2, value: 16, label: "Font size:" })
+
+filtered = transpose(plot_data).filter(function(metric) {
+  if (best_method) {
+    // don't filter based on method twice
+    return ancestries.includes(metric.ancestry) && 
+      endpoint.includes(metric.phenotype) && 
+      metric.best_method == best_method;
+  } else {
+    return  biobanks.includes(metric.bbid) && 
+      methods.includes(metric.method) && 
+      ancestries.includes(metric.ancestry) && 
+      endpoint.includes(metric.phenotype);
+  }
+})
+
+```
+
+```{ojs}
+//| code-fold: true
+//| label: fig-penguin-body-mass
+//| fig-cap: "Penguin body mass by sex and species"
+
+
+Plot.plot({
+  marginTop: 50,
+  marginLeft: 150,
+  marginRight: 50,
+  marginBottom: 50,
+  x: {label: "βₓ"},
+  y: {label: "Development method"},
+  color: {
+    scheme: "Tableau10", 
+    legend: false
+  },
+  symbol: {
+    legend: true
+  },
+  style: {
+    fontSize: fontsize.toString().concat("px")
+  },
+  grid: true,
+  facet: {
+    data: filtered, 
+    y: "bbid", 
+    x: "ancestry"
+  },
+  marks: [
+    Plot.frame(),
+    // link == error bar
+    Plot.link(filtered, {
+      x1: "BETA_CI_LOW",
+      x2: "BETA_CI_HIGH",
+      y1: "method",
+      y2: "method"
+    }),
+    Plot.dot(filtered, {
+      x: "BETA", 
+      y: "method",
+      fill: "method",
+      symbol: "method"
+    })
+  ]
+})
+
 ```
