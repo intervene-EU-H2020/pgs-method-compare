@@ -7,9 +7,10 @@ title: "prs-method-document"
 #| message: false
 library(dplyr)
 ```
-# 5 European Biobanks
 
-## R map 
+# About
+
+Some description about 5 different biobanks across Europe.
 
 ```{r}
 #| echo: false
@@ -35,50 +36,13 @@ leaflet::leaflet(biobank_geo_data) %>%
 
 ```
 
-## OJS map 
-
-```{ojs}
-//| code-fold: true
-d3 = require('d3')
-
-// todo: bundle this data locally 
-world = await d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json")
-land = topojson.feature(world, world.objects.land)
-
-// use a circle to focus on northern Europe
-lat = 15
-long = 65
-circle = d3.geoCircle().center([lat, long]).radius(15)()
-
-Plot.plot({
-    projection: {
-    type: "azimuthal-equidistant",
-    rotate: [-9, -34],
-    domain: circle,
-    inset: 10
-  },
-  marks: [
-    Plot.geo(land, {fill: "currentColor", fillOpacity: 0.2}),
-    Plot.geo(circle, {stroke: "red", strokeOpacity: 0}), // hide the circle
-    Plot.graticule(),
-    Plot.frame(),
-    Plot.dot(transpose(biobank_geo_data), {x: "longitude", y: "latitude", r: "n", stroke: "red", fill: "red", fillOpacity: 0.2})
-  ]
-})
-
-```
-
-
-# Figure 1A (to do: come up with a fancier name)
+# Biobank comparison
 
 ```{r}
 #| echo: false
 #| warning: false
 
 library(prsCompaR)
-
-library(readr)
-library(dplyr)
 
 data(metrics)
 
@@ -123,7 +87,7 @@ viewof ancestries = Inputs.checkbox(
     unique: true
 })
 
-viewof metrics = Inputs.radio(new Map([["β", "BETA"], ["Area Under Curve (AUC)", "AUC"], ["Odds Ratio (OR)", "OR"], ["R²", "R2"]]), {label: "Metric", value: "BETA"})
+viewof chosen_metric = Inputs.radio(new Map([["β", "BETA"], ["Area Under Curve (AUC)", "AUC"], ["Odds Ratio (OR)", "OR"], ["R²", "R2"]]), {label: "Metric", value: "BETA"})
 
 viewof endpoint = Inputs.select(endpoints, {value: "T2D", label: "Endpoint:"})
 
@@ -146,19 +110,28 @@ filtered = transpose(plot_data).filter(function(metric) {
 })
 
 ```
+```{ojs}
+//| echo: false
+
+beta_map = new Map([["x_label", "βₓ"], ["x", "BETA"], ["errorbar_high", "BETA_CI_HIGH"], ["errorbar_low", "BETA_CI_LOW"]])
+auc_map = new Map([["x_label", "AUC"], ["x", "AUC_MEDIAN"], ["errorbar_high", "AUC_CI_HIGH"], ["errorbar_low", "AUC_CI_LOW"]])
+r2_map = new Map([["x_label", "R²"], ["x", "R2_OBS"], ["errorbar_high", "R2_OBS_CI_HIGH"], ["errorbar_low", "R2_OBS_CI_LOW"]])
+or_map = new Map([["x_label", "Odds Ratio"], ["x", "OR"], ["errorbar_high", "OR_CI_HIGH"], ["errorbar_low", "OR_CI_LOW"]])
+
+metrics = ({ "BETA": beta_map, "AUC": auc_map, "R2": r2_map, "OR": or_map })
+```
 
 ```{ojs}
 //| code-fold: true
 //| label: fig-penguin-body-mass
 //| fig-cap: "Penguin body mass by sex and species"
 
-
 Plot.plot({
   marginTop: 50,
   marginLeft: 150,
   marginRight: 50,
   marginBottom: 50,
-  x: {label: "βₓ"},
+  x: {label: metrics[chosen_metric].get("x_label") },
   y: {label: "Development method"},
   color: {
     scheme: "Tableau10", 
@@ -180,13 +153,13 @@ Plot.plot({
     Plot.frame(),
     // link == error bar
     Plot.link(filtered, {
-      x1: "BETA_CI_LOW",
-      x2: "BETA_CI_HIGH",
+      x1: metrics[chosen_metric].get("errorbar_low"),
+      x2:  metrics[chosen_metric].get("errorbar_high"),
       y1: "method",
       y2: "method"
     }),
     Plot.dot(filtered, {
-      x: "BETA", 
+      x:  metrics[chosen_metric].get("x"), 
       y: "method",
       fill: "method",
       symbol: "method"
