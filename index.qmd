@@ -2,6 +2,73 @@
 title: "prs-method-document"
 ---
 
+```{r}
+#| echo: false
+#| message: false
+library(dplyr)
+```
+# 5 European Biobanks
+
+## R map 
+
+```{r}
+#| echo: false
+
+# n taken from: https://www.interveneproject.eu/who-we-are
+biobank_geo_data <- tibble::tribble(
+  ~latitude,  ~longitude, ~bb, ~n,
+  53.395399745894586, -2.180809763111116, "UK Biobank", 500000,
+  51.5168136896447, -0.06164507552512638, "Genes & Health", 100000,
+  58.37306995058682, 26.71770667106068, "Estonia Biobank", 200000,
+  63.739797063187694, 11.290036844327096, "HUNT Biobank", 100000,
+  60.17469210590568, 24.950115192601018, "FinnGen", 500000
+)
+
+ojs_define(biobank_geo_data)
+
+leaflet::leaflet(biobank_geo_data) %>%
+  leaflet::addTiles() %>%
+  leaflet::addMarkers(~longitude, ~latitude, label=~bb,
+                      labelOptions = leaflet::labelOptions(noHide = T,
+                                                           direction = "left",
+                                                           textsize = "14px"))
+
+```
+
+## OJS map 
+
+```{ojs}
+//| code-fold: true
+d3 = require('d3')
+
+// todo: bundle this data locally 
+world = await d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json")
+land = topojson.feature(world, world.objects.land)
+
+// use a circle to focus on northern Europe
+lat = 15
+long = 65
+circle = d3.geoCircle().center([lat, long]).radius(15)()
+
+Plot.plot({
+    projection: {
+    type: "azimuthal-equidistant",
+    rotate: [-9, -34],
+    domain: circle,
+    inset: 10
+  },
+  marks: [
+    Plot.geo(land, {fill: "currentColor", fillOpacity: 0.2}),
+    Plot.geo(circle, {stroke: "red", strokeOpacity: 0}), // hide the circle
+    Plot.graticule(),
+    Plot.frame(),
+    Plot.dot(transpose(biobank_geo_data), {x: "longitude", y: "latitude", r: "n", stroke: "red", fill: "red", fillOpacity: 0.2})
+  ]
+})
+
+```
+
+
 # Figure 1A (to do: come up with a fancier name)
 
 ```{r}
@@ -55,6 +122,8 @@ viewof ancestries = Inputs.checkbox(
     sort: true,
     unique: true
 })
+
+viewof metrics = Inputs.radio(new Map([["β", "BETA"], ["Area Under Curve (AUC)", "AUC"], ["Odds Ratio (OR)", "OR"], ["R²", "R2"]]), {label: "Metric", value: "BETA"})
 
 viewof endpoint = Inputs.select(endpoints, {value: "T2D", label: "Endpoint:"})
 
