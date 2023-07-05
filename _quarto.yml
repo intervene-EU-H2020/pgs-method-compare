@@ -4,11 +4,20 @@ project:
 website:
   title: "prs-method-document"
   navbar:
+    tools:
+    - icon: twitter
+      href: https://twitter.com/intervene_eu
+    - icon: github
+      menu:
+        - text: Source
+          url:  https://github.com/intervene-EU-H2020/prs-method-compare
+        - text: Report a Bug
+          url:  https://github.com/intervene-EU-H2020/prs-method-compare/issues/new
     left:
       - href: index.qmd
         text: Home
       - about.qmd
-  body-footer: |
+  page-footer: |
     This project has received funding from the European Union’s Horizon 2020 research and innovation programme under grant agreement No 101016775
 
 format:
