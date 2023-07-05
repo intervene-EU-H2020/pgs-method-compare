@@ -72,8 +72,8 @@ viewof biobanks = Inputs.checkbox(
 )
 
 viewof methods = Inputs.checkbox(
-  ["dbslmm", "sbayesr", "lassosum", "prscs", "ldpres2", "megaprs", "pt.clump", "UKBB.EnsPRS"],
-  { value: ["dbslmm", "sbayesr", "lassosum", "prscs", "ldpres2", "megaprs", "pt.clump", "UKBB.EnsPRS"],
+  ["dbslmm", "sbayesr", "lassosum", "prscs", "ldpred2", "megaprs", "pt.clump", "UKBB.EnsPRS"],
+  { value: ["dbslmm", "sbayesr", "lassosum", "prscs", "ldpred2", "megaprs", "pt.clump", "UKBB.EnsPRS"],
   label: "Method:",
   sort: true, 
   unique: true }
