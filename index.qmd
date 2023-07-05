@@ -162,7 +162,7 @@ Plot.plot({
       x:  metrics[chosen_metric].get("x"), 
       y: "method",
       fill: "method",
-      symbol: "method"
+      symbol: "method_type"
     })
   ]
 })
