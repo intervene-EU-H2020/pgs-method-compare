@@ -67,6 +67,7 @@ viewof biobanks = Inputs.checkbox(
   [["UK Biobank", "ukbb"], ["Estonia Biobank", "ebb"], ["Genes & Health", "gnh"], ["FinnGenn", "finngen"], ["HUNT", "hunt"]]),
   { value: ["ukbb", "ebb", "gnh", "finngen", "hunt"], 
   label: "Biobank:",
+  format: ([name, value]) => `${name} (${value})`, 
   sort: true, 
   unique: true }
 )
@@ -92,8 +93,6 @@ viewof chosen_metric = Inputs.radio(new Map([["β", "BETA"], ["Area Under Curve 
 viewof endpoint = Inputs.select(endpoints, {value: "T2D", label: "Endpoint:"})
 
 viewof best_method = Inputs.toggle({label: "Show best method:", value: false})
-
-viewof fontsize = Inputs.range([12, 40], {step: 2, value: 16, label: "Font size:" })
 
 filtered = transpose(plot_data).filter(function(metric) {
   if (best_method) {
@@ -127,27 +126,41 @@ metrics = ({ "BETA": beta_map, "AUC": auc_map, "R2": r2_map, "OR": or_map })
 //| fig-cap: "Penguin body mass by sex and species"
 
 Plot.plot({
+  // make plot accessible for screen readers
+  ariaLabel: "Explanation of some stuff", // todo: fix
   marginTop: 50,
   marginLeft: 150,
   marginRight: 50,
-  marginBottom: 50,
-  x: {label: metrics[chosen_metric].get("x_label") },
-  y: {label: "Development method"},
+  x: {
+    label: metrics[chosen_metric].get("x_label") + " →",
+    nice: true
+  },
+  y: {
+    label: "Development method"
+  },
   color: {
-    scheme: "Tableau10", 
+    type: "categorical",
     legend: false
   },
   symbol: {
     legend: true
   },
   style: {
-    fontSize: fontsize.toString().concat("px")
+    fontSize: "12px"
   },
-  grid: true,
   facet: {
     data: filtered, 
     y: "bbid", 
-    x: "ancestry"
+    x: "ancestry",
+    marginRight: 75,
+    marginTop: 50,
+    grid: true
+  },
+  fx: {
+    label: "Ancestry"
+  },
+  fy: {
+    label: "Biobank"
   },
   marks: [
     Plot.frame(),

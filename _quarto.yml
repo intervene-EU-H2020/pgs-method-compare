@@ -11,7 +11,7 @@ website:
       menu:
         - text: Source
           url:  https://github.com/intervene-EU-H2020/prs-method-compare
-        - text: Report a Bug
+        - text: Report a bug
           url:  https://github.com/intervene-EU-H2020/prs-method-compare/issues/new
     left:
       - href: index.qmd
