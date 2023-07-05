@@ -109,6 +109,7 @@ filtered = transpose(plot_data).filter(function(metric) {
 })
 
 ```
+
 ```{ojs}
 //| echo: false
 
@@ -126,11 +127,12 @@ metrics = ({ "BETA": beta_map, "AUC": auc_map, "R2": r2_map, "OR": or_map })
 //| fig-cap: "Penguin body mass by sex and species"
 
 Plot.plot({
+  grid: true,
   // make plot accessible for screen readers
   ariaLabel: "Explanation of some stuff", // todo: fix
   marginTop: 50,
   marginLeft: 150,
-  marginRight: 50,
+  marginRight: 80,
   x: {
     label: metrics[chosen_metric].get("x_label") + " →",
     nice: true
@@ -153,8 +155,7 @@ Plot.plot({
     y: "bbid", 
     x: "ancestry",
     marginRight: 75,
-    marginTop: 50,
-    grid: true
+    marginTop: 50
   },
   fx: {
     label: "Ancestry"
