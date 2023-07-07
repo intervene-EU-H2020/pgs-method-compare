@@ -157,17 +157,6 @@
       ],
       "Hash": "6aa54f69598c32177e920eb3402e8293"
     },
-    "data.table": {
-      "Package": "data.table",
-      "Version": "1.14.8",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "R",
-        "methods"
-      ],
-      "Hash": "b4c06e554f33344e044ccd7fdca750a9"
-    },
     "digest": {
       "Package": "digest",
       "Version": "0.6.31",
@@ -651,17 +640,15 @@
       "Version": "0.1.0",
       "Source": "GitHub",
       "RemoteType": "github",
-      "RemoteHost": "api.github.com",
       "RemoteUsername": "intervene-EU-H2020",
       "RemoteRepo": "prsCompaR",
       "RemoteRef": "main",
-      "RemoteSha": "f97b3823c013b5e89773816410f4855d21a20469",
+      "RemoteSha": "887df291b7ad27f6f2693be73275523a83ae1de2",
+      "RemoteHost": "api.github.com",
       "Requirements": [
-        "R",
-        "data.table",
-        "ggplot2"
+        "R"
       ],
-      "Hash": "a6a613bedb957447ef0e5c9053f5eed9"
+      "Hash": "a482127723826e872aff2dd2a8264352"
     },
     "rappdirs": {
       "Package": "rappdirs",

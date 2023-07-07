@@ -1,0 +1,107 @@
+---
+title: "Pairwise method comparison"
+---
+
+```{r}
+#| echo: false
+library(prsCompaR)
+data(dst)
+endpoints <- unique(metrics$phenotype)
+
+ojs_define(dst)
+ojs_define(endpoints)
+```
+
+```{ojs}
+//| code-fold: true
+//| panel: input
+
+viewof biobanks = Inputs.checkbox(
+  new Map( 
+  [["UK Biobank", "ukbb"], ["Estonia Biobank", "ebb"], ["Genes & Health", "gnh"], ["FinnGenn", "finngen"], ["HUNT", "hunt"]]),
+  { value: ["ukbb", "ebb", "gnh", "finngen", "hunt"], 
+  label: "Biobank:",
+  format: ([name, value]) => `${name} (${value})`, 
+  sort: true, 
+  unique: true }
+)
+
+viewof method_y = Inputs.radio(
+  ["dbslmm", "sbayesr", "lassosum", "prscs", "ldpred2", "megaprs", "pt.clump", "UKBB.EnsPRS"],
+  { value: ["dbslmm", "sbayesr", "lassosum", "prscs", "ldpred2", "megaprs", "pt.clump", "UKBB.EnsPRS"],
+  value: "prscs",
+  label: "Method Y:",
+  sort: true, 
+  unique: true }
+)
+
+viewof method_type = Inputs.radio(["CV", "auto"],
+{ label: "Method type:",
+  value: "auto"})
+  
+viewof endpoint = Inputs.select(endpoints, {value: "T2D", label: "Endpoint:"})
+
+filtered = transpose(dst).filter(function(x) {
+  return method_y.includes(x.method_y) &&
+      method_type.includes(x.method_type_y) &&
+      biobanks.includes(x.bbid) &&
+      endpoint.includes(x.phenotype);
+})
+
+```
+
+```{ojs}
+//| code-fold: true
+//| label: fig-penguin-body-mass
+//| fig-cap: "Penguin body mass by sex and species"
+
+Plot.plot({
+  grid: true,
+  marginLeft: 150,
+  color: {
+    type: "categorical",
+    legend: false
+  },
+  symbol: {
+    legend: true
+  },
+  style: {
+    fontSize: "12px"
+  },
+  facet: {
+    data: filtered, 
+    y: "bbid", 
+    x: "ancestry",
+    marginRight: 75,
+    marginTop: 50
+  },
+  fx: {
+    label: "Ancestry"
+  },
+  fy: {
+    label: "Biobank"
+  },
+  x: {
+    label: "βₓ - βᵧ"
+  },
+  y: {
+    label: "Method x"
+  },
+  marks: [
+    Plot.frame(),
+    Plot.dot(filtered, {
+      x: "beta_diff",
+      y: "method_x",
+      fill: "method_x",
+      symbol: "method_type_x"
+    }),
+    Plot.link(filtered, {
+      x1: "ci_low_diff",
+      x2: "ci_high_diff",
+      y1: "method_x",
+      y2: "method_x"
+    }),
+    Plot.ruleX([0], { strokeOpacity: 0.5})
+  ]
+}) 
+```
