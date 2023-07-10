@@ -1,0 +1,150 @@
+---
+title: "Polygenic risk score effect sizes"
+---
+
+```{r setup}
+#| echo: false
+#| message: false
+library(dplyr)
+library(prsCompaR)
+data(metrics)
+```
+
+```{r}
+#| echo: false
+metrics %>%
+  group_by(bbid, ancestry, phenotype) %>%
+  mutate(best_method = ifelse(BETA == max(BETA), TRUE, FALSE)) -> metrics_annotated
+
+endpoints <- unique(metrics$phenotype)
+prs_methods <- unique(metrics$method)
+plot_data <- metrics_annotated
+
+ojs_define(plot_data)
+ojs_define(endpoints)
+```
+
+```{ojs}
+//| code-fold: true
+//| panel: input
+
+viewof biobanks = Inputs.checkbox(
+  new Map( 
+    [["UK Biobank", "ukbb"], ["Estonia Biobank", "ebb"], ["Genes & Health", "gnh"], ["FinnGenn", "finngen"], ["HUNT", "hunt"]]),
+  { value: ["ukbb", "ebb", "gnh", "finngen", "hunt"], 
+    label: "Biobank:",
+    format: ([name, value]) => `${name} (${value})`, 
+    sort: true, 
+    unique: true }
+)
+
+viewof methods = Inputs.checkbox(
+  ["dbslmm", "sbayesr", "lassosum", "prscs", "ldpred2", "megaprs", "pt.clump", "UKBB.EnsPRS"],
+  { value: ["dbslmm", "sbayesr", "lassosum", "prscs", "ldpred2", "megaprs", "pt.clump", "UKBB.EnsPRS"],
+    label: "Method:",
+    sort: true, 
+    unique: true }
+)
+
+viewof ancestries = Inputs.checkbox(
+  ["EUR", "SAS"],
+  { label: "Ancestry",
+    value: ["EUR", "SAS"],
+    sort: true,
+    unique: true
+  })
+
+viewof chosen_metric = Inputs.radio(new Map([["β", "BETA"], ["Area Under Curve (AUC)", "AUC"], ["Odds Ratio (OR)", "OR"], ["R²", "R2"]]), {label: "Metric", value: "BETA"})
+
+viewof endpoint = Inputs.select(endpoints, {value: "T2D", label: "Endpoint:"})
+
+viewof best_method = Inputs.toggle({label: "Show best method:", value: false})
+
+filtered = transpose(plot_data).filter(function(metric) {
+  if (best_method) {
+    // don't filter based on method twice
+    return ancestries.includes(metric.ancestry) && 
+      endpoint.includes(metric.phenotype) && 
+      metric.best_method == best_method;
+  } else {
+    return  biobanks.includes(metric.bbid) && 
+      methods.includes(metric.method) && 
+      ancestries.includes(metric.ancestry) && 
+      endpoint.includes(metric.phenotype);
+  }
+})
+
+```
+
+```{ojs}
+//| echo: false
+
+beta_map = new Map([["x_label", "βₓ"], ["x", "BETA"], ["errorbar_high", "BETA_CI_HIGH"], ["errorbar_low", "BETA_CI_LOW"]])
+auc_map = new Map([["x_label", "AUC"], ["x", "AUC_MEDIAN"], ["errorbar_high", "AUC_CI_HIGH"], ["errorbar_low", "AUC_CI_LOW"]])
+r2_map = new Map([["x_label", "R²"], ["x", "R2_OBS"], ["errorbar_high", "R2_OBS_CI_HIGH"], ["errorbar_low", "R2_OBS_CI_LOW"]])
+or_map = new Map([["x_label", "Odds Ratio"], ["x", "OR"], ["errorbar_high", "OR_CI_HIGH"], ["errorbar_low", "OR_CI_LOW"]])
+
+metrics = ({ "BETA": beta_map, "AUC": auc_map, "R2": r2_map, "OR": or_map })
+```
+
+```{ojs}
+//| code-fold: true
+//| label: fig-penguin-body-mass
+//| fig-cap: "Penguin body mass by sex and species"
+
+Plot.plot({
+  grid: true,
+  // make plot accessible for screen readers
+  ariaLabel: "Explanation of some stuff", // todo: fix
+  marginTop: 50,
+  marginLeft: 150,
+  marginRight: 80,
+  x: {
+    label: metrics[chosen_metric].get("x_label") + " →",
+    nice: true
+  },
+  y: {
+    label: "Development method"
+  },
+  color: {
+    type: "categorical",
+    legend: false
+  },
+  symbol: {
+    legend: true
+  },
+  style: {
+    fontSize: "12px"
+  },
+  facet: {
+    data: filtered, 
+    y: "bbid", 
+    x: "ancestry",
+    marginRight: 75,
+    marginTop: 50
+  },
+  fx: {
+    label: "Ancestry"
+  },
+  fy: {
+    label: "Biobank"
+  },
+  marks: [
+    Plot.frame(),
+    // link == error bar
+    Plot.link(filtered, {
+      x1: metrics[chosen_metric].get("errorbar_low"),
+      x2:  metrics[chosen_metric].get("errorbar_high"),
+      y1: "method",
+      y2: "method"
+    }),
+    Plot.dot(filtered, {
+      x:  metrics[chosen_metric].get("x"), 
+      y: "method",
+      fill: "method",
+      symbol: "method_type"
+    })
+  ]
+})
+
+```

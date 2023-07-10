@@ -1,52 +1,27 @@
 ---
-title: "prs-method-document"
+title: "Pairwise comparison of scoring methods across 5 biobanks"
 ---
 
 ```{r}
 #| echo: false
 #| message: false
 library(dplyr)
-```
-
-# About
-
-Some description about 5 different biobanks across Europe.
-
-```{r}
-#| echo: false
-
-# n taken from: https://www.interveneproject.eu/who-we-are
-biobank_geo_data <- tibble::tribble(
-  ~latitude,  ~longitude, ~bb, ~n,
-  53.395399745894586, -2.180809763111116, "UK Biobank", 500000,
-  51.5168136896447, -0.06164507552512638, "Genes & Health", 100000,
-  58.37306995058682, 26.71770667106068, "Estonia Biobank", 200000,
-  63.739797063187694, 11.290036844327096, "HUNT Biobank", 100000,
-  60.17469210590568, 24.950115192601018, "FinnGen", 500000
-)
-
-ojs_define(biobank_geo_data)
-```
-
-# Biobank comparison
-
-```{r}
-#| echo: false
-#| warning: false
-
 library(prsCompaR)
+data(dst)
+```
 
-data(metrics)
-
-metrics %>%
-  group_by(bbid, ancestry, phenotype) %>%
-  mutate(best_method = ifelse(BETA == max(BETA), TRUE, FALSE)) -> metrics_annotated
+```{r}
+#| echo: false
+#| message: false
+dst %>%
+  select(method_x, bbid, ancestry, method_x, method_type_x, beta_diff, beta_y, ci_low_diff, ci_high_diff, phenotype, method_y, method_type_y) %>%
+  mutate(relative_beta_diff = beta_diff / beta_y,
+         relative_ci_high_diff = ci_high_diff / beta_y,
+         relative_ci_low_diff = ci_low_diff / beta_y) -> pairwise
 
 endpoints <- unique(metrics$phenotype)
-prs_methods <- unique(metrics$method)
-plot_data <- metrics_annotated
 
-ojs_define(plot_data)
+ojs_define(pairwise)
 ojs_define(endpoints)
 ```
 
@@ -54,84 +29,50 @@ ojs_define(endpoints)
 //| code-fold: true
 //| panel: input
 
-viewof biobanks = Inputs.checkbox(
-  new Map( 
-  [["UK Biobank", "ukbb"], ["Estonia Biobank", "ebb"], ["Genes & Health", "gnh"], ["FinnGenn", "finngen"], ["HUNT", "hunt"]]),
-  { value: ["ukbb", "ebb", "gnh", "finngen", "hunt"], 
-  label: "Biobank:",
-  format: ([name, value]) => `${name} (${value})`, 
-  sort: true, 
-  unique: true }
-)
-
-viewof methods = Inputs.checkbox(
+viewof method_y = Inputs.radio(
   ["dbslmm", "sbayesr", "lassosum", "prscs", "ldpred2", "megaprs", "pt.clump", "UKBB.EnsPRS"],
   { value: ["dbslmm", "sbayesr", "lassosum", "prscs", "ldpred2", "megaprs", "pt.clump", "UKBB.EnsPRS"],
-  label: "Method:",
+  value: "pt.clump",
+  label: "Baseline method:",
   sort: true, 
-  unique: true }
+  unique: true,
+  disabled: disable_method_type[method_type]}
 )
 
-viewof ancestries = Inputs.checkbox(
-  ["EUR", "SAS"],
-  { label: "Ancestry",
-    value: ["EUR", "SAS"],
-    sort: true,
-    unique: true
-})
-
-viewof chosen_metric = Inputs.radio(new Map([["β", "BETA"], ["Area Under Curve (AUC)", "AUC"], ["Odds Ratio (OR)", "OR"], ["R²", "R2"]]), {label: "Metric", value: "BETA"})
-
+viewof method_type = Inputs.radio(["CV", "auto"],
+{ label: "Tuning method:",
+  value: "auto"})
+  
 viewof endpoint = Inputs.select(endpoints, {value: "T2D", label: "Endpoint:"})
 
-viewof best_method = Inputs.toggle({label: "Show best method:", value: false})
-
-filtered = transpose(plot_data).filter(function(metric) {
-  if (best_method) {
-    // don't filter based on method twice
-    return ancestries.includes(metric.ancestry) && 
-      endpoint.includes(metric.phenotype) && 
-      metric.best_method == best_method;
-  } else {
-    return  biobanks.includes(metric.bbid) && 
-      methods.includes(metric.method) && 
-      ancestries.includes(metric.ancestry) && 
-      endpoint.includes(metric.phenotype);
-  }
+viewof use_relative = Inputs.radio(["relative", "raw"],
+{ label: "Difference metric",
+  value: "relative"})
+  
+filtered = transpose(pairwise).filter(function(x) {
+  return method_y.includes(x.method_y) &&
+      method_type.includes(x.method_type_y) &&
+      endpoint.includes(x.phenotype);
 })
-
 ```
 
 ```{ojs}
 //| echo: false
 
-beta_map = new Map([["x_label", "βₓ"], ["x", "BETA"], ["errorbar_high", "BETA_CI_HIGH"], ["errorbar_low", "BETA_CI_LOW"]])
-auc_map = new Map([["x_label", "AUC"], ["x", "AUC_MEDIAN"], ["errorbar_high", "AUC_CI_HIGH"], ["errorbar_low", "AUC_CI_LOW"]])
-r2_map = new Map([["x_label", "R²"], ["x", "R2_OBS"], ["errorbar_high", "R2_OBS_CI_HIGH"], ["errorbar_low", "R2_OBS_CI_LOW"]])
-or_map = new Map([["x_label", "Odds Ratio"], ["x", "OR"], ["errorbar_high", "OR_CI_HIGH"], ["errorbar_low", "OR_CI_LOW"]])
+beta_map = new Map([["x_label", "βₓ - βᵧ"], ["x", "beta_diff"], ["error_bar_low", "ci_low_diff"], ["error_bar_high", "ci_high_diff"]])
+relative_map = new Map([["x_label", "(βₓ - βᵧ) / βᵧ"], ["x", "relative_beta_diff"], ["error_bar_low", "relative_ci_low_diff"], ["error_bar_high", "relative_ci_high_diff"]])
+x_map = ({ "relative": relative_map, "raw": beta_map })
 
-metrics = ({ "BETA": beta_map, "AUC": auc_map, "R2": r2_map, "OR": or_map })
+// some methods only have one method type, so disable the radio button
+disable_method_type = ({ "CV": ["prscs", "sbayesr", "dbslmm"], "auto": ["UKBB.EnsPRS"]})
 ```
 
 ```{ojs}
-//| code-fold: true
-//| label: fig-penguin-body-mass
-//| fig-cap: "Penguin body mass by sex and species"
+//| echo: false
 
 Plot.plot({
   grid: true,
-  // make plot accessible for screen readers
-  ariaLabel: "Explanation of some stuff", // todo: fix
-  marginTop: 50,
   marginLeft: 150,
-  marginRight: 80,
-  x: {
-    label: metrics[chosen_metric].get("x_label") + " →",
-    nice: true
-  },
-  y: {
-    label: "Development method"
-  },
   color: {
     type: "categorical",
     legend: false
@@ -144,33 +85,99 @@ Plot.plot({
   },
   facet: {
     data: filtered, 
-    y: "bbid", 
-    x: "ancestry",
+    y: "bbid",
     marginRight: 75,
-    marginTop: 50
-  },
-  fx: {
-    label: "Ancestry"
   },
   fy: {
-    label: "Biobank"
+    label: "Biobank",
+    domain: ["ebb", "finngen", "hunt", "ukbb"]
+  },
+  x: {
+    label: x_map[use_relative].get("x_label")
+  },
+  y: {
+    label: "Score development method"
   },
   marks: [
     Plot.frame(),
-    // link == error bar
     Plot.link(filtered, {
-      x1: metrics[chosen_metric].get("errorbar_low"),
-      x2:  metrics[chosen_metric].get("errorbar_high"),
-      y1: "method",
-      y2: "method"
+      filter: (d) => d.ancestry == "EUR",
+      x1: x_map[use_relative].get("error_bar_low"),
+      x2: x_map[use_relative].get("error_bar_high"),
+      y1: "method_x",
+      y2: "method_x"
     }),
+    Plot.text([`EUR`], {
+      fy: ["bbid"],
+      frameAnchor: "bottom-right",
+      lineWidth: 18,
+      dx: -5,
+      dy: -5
+    }),
+    Plot.ruleX([0], {stroke: "lightgray", strokeWidth: 2, strokeDasharray: "4 2"}),
     Plot.dot(filtered, {
-      x:  metrics[chosen_metric].get("x"), 
-      y: "method",
-      fill: "method",
-      symbol: "method_type"
+      filter: (d) => d.ancestry == "EUR",
+      x: x_map[use_relative].get("x"),
+      y: "method_x",
+      fill: "method_x",
+      symbol: "method_type_x"
     })
   ]
 })
 
+Plot.plot({
+  grid: true,
+  marginLeft: 150,
+  color: {
+    type: "categorical",
+    legend: false
+  },
+  symbol: {
+    legend: false
+  },
+  style: {
+    fontSize: "12px"
+  },
+  facet: {
+    data: filtered, 
+    y: "bbid",
+    marginRight: 75,
+    marginTop: 50
+  },
+  fy: {
+    label: "Biobank",
+    domain: ["gnh", "ukbb"]
+  },
+  x: {
+    label: x_map[use_relative].get("x_label")
+  },
+  y: {
+    label: "Score development method"
+  },
+  marks: [
+    Plot.frame(),
+    Plot.dot(filtered, {
+      filter: (d) => d.ancestry == "SAS",
+      x: x_map[use_relative].get("x"),
+      y: "method_x",
+      fill: "method_x",
+      symbol: "method_type_x"
+    }),
+    Plot.link(filtered, {
+      filter: (d) => d.ancestry == "SAS",
+      x1: x_map[use_relative].get("error_bar_low"),
+      x2: x_map[use_relative].get("error_bar_high"),
+      y1: "method_x",
+      y2: "method_x"
+    }),
+    Plot.text([`SAS`], {
+      fy: ["bbid"],
+      frameAnchor: "bottom-right",
+      lineWidth: 18,
+      dx: -5,
+      dy: -5
+    }),
+    Plot.ruleX([0], {stroke: "lightgray", strokeWidth: 2, strokeDasharray: "4 2"})
+  ]
+}) 
 ```
