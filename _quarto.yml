@@ -2,7 +2,7 @@ project:
   type: website
 
 website:
-  title: "prs-method-document"
+  title: "PRS method benchmarks"
   navbar:
     tools:
     - icon: twitter
@@ -18,10 +18,12 @@ website:
         text: Home
       - href: effect-sizes.qmd
         text: Effect sizes
+      - href: pairwise.qmd
+        text: Pairwise comparison
+      - href: meta.qmd
+        text: Meta analysis
       - href: glossary.qmd
         text: Glossary
-      - href: about.qmd 
-        text: About
   page-footer: |
     This project has received funding from the European Union’s Horizon 2020 research and innovation programme under grant agreement No 101016775
 

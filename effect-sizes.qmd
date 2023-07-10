@@ -2,6 +2,12 @@
 title: "Polygenic risk score effect sizes"
 ---
 
+## What does it mean?
+
+Using an ensemble of scores, each developed using a different method, can capture a larger effect size for a phenotype.
+
+Try exploring the data using different phenotypes, metrics, or methods below.
+
 ```{r setup}
 #| echo: false
 #| message: false
@@ -89,8 +95,6 @@ metrics = ({ "BETA": beta_map, "AUC": auc_map, "R2": r2_map, "OR": or_map })
 
 ```{ojs}
 //| code-fold: true
-//| label: fig-penguin-body-mass
-//| fig-cap: "Penguin body mass by sex and species"
 
 Plot.plot({
   grid: true,
