@@ -4,8 +4,14 @@ title: "Pairwise method comparison"
 
 ```{r}
 #| echo: false
+#| message: false
 library(prsCompaR)
+library(dplyr)
+
 data(dst)
+dst %>%
+  mutate(beta_diff_y = beta_diff / beta_y) %>%
+  select(method_x, bbid, ancestry, beta_diff, beta_diff_y, ci_low_diff, ci_high_diff) -> pairwise
 endpoints <- unique(metrics$phenotype)
 
 ojs_define(dst)
