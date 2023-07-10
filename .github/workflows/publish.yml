@@ -5,6 +5,9 @@ on:
 
 name: Quarto Publish
 
+env:
+  RENV_CONFIG_SANDBOX_ENABLED: FALSE
+  
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
