@@ -4,9 +4,9 @@ title: "Polygenic risk score effect sizes"
 
 ## What does it mean?
 
-Using an ensemble of scores, each developed using a different method, can capture a larger effect size for a phenotype.
+Using an ensemble of scores, each created using a different PGS development method, can capture a larger effect size for a phenotype. This means that the strength of the relationship between genetic data and phenotype is greater.
 
-Try exploring the data using different phenotypes, metrics, or methods below.
+Try exploring the effect size for different phenotypes, metrics, or methods below.
 
 ```{r setup}
 #| echo: false

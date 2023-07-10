@@ -10,9 +10,11 @@ With a mystery ingredient called Chemical X.
 
 # What is this website?
 
-This website is complements a published benchmark of PGS development methods across five European biobanks, available below:
+This website complements a published benchmark of PGS development methods across five European biobanks, available below:
 
 > Remo's fantastic paper, the best journal ever, August 2023 (wow super fast)
+
+The analysis is complex, and the aim of the interactive visualisations on this website is to make the benchmark results clearer.
 
 ## Who might find the website useful?
 
@@ -33,7 +35,7 @@ INTERVENE consortium explanation.
 The data and website code are open source and permissively licensed:
 
 * The data are published in an [R data package](https://github.com/intervene-EU-H2020/prsCompaR). Have fun! 
-* The website is [built with Quarto and Observable JS](https://github.com/intervene-EU-H2020/prs-method-compare)
+* The website is [built with Quarto, R, and Observable JS](https://github.com/intervene-EU-H2020/prs-method-compare)
 
 ```{r}
 #| echo: false
