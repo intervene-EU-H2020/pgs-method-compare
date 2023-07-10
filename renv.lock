@@ -643,12 +643,12 @@
       "RemoteUsername": "intervene-EU-H2020",
       "RemoteRepo": "prsCompaR",
       "RemoteRef": "main",
-      "RemoteSha": "887df291b7ad27f6f2693be73275523a83ae1de2",
+      "RemoteSha": "64fb27c3f3a2b79e8e8b40003047b95965b247ed",
       "RemoteHost": "api.github.com",
       "Requirements": [
         "R"
       ],
-      "Hash": "a482127723826e872aff2dd2a8264352"
+      "Hash": "3875bf87169f6029462f8ffe2f9eb7e4"
     },
     "rappdirs": {
       "Package": "rappdirs",
