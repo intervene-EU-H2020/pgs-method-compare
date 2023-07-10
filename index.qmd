@@ -26,14 +26,6 @@ biobank_geo_data <- tibble::tribble(
 )
 
 ojs_define(biobank_geo_data)
-
-leaflet::leaflet(biobank_geo_data) %>%
-  leaflet::addTiles() %>%
-  leaflet::addMarkers(~longitude, ~latitude, label=~bb,
-                      labelOptions = leaflet::labelOptions(noHide = T,
-                                                           direction = "left",
-                                                           textsize = "14px"))
-
 ```
 
 # Biobank comparison
