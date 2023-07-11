@@ -1,3 +1,11 @@
+# What is this website?
+
+This website complements a published benchmark of polygenic score development methods across five European biobanks, available below:
+
+> Remo's fantastic paper, the best journal ever, August 2023 (wow super fast)
+
+The analysis is complex, and the aim of the interactive visualisations on this website is to make the benchmark results clearer.
+
 # What is a polygenic score?
 
 From the [PGS Catalog](https://www.pgscatalog.org):
@@ -6,15 +14,15 @@ From the [PGS Catalog](https://www.pgscatalog.org):
 
 # How are polygenic scores made?
 
-With a mystery ingredient called Chemical X.
+PGS are typically developed using large amounts of data from a biobank, like the [UK Biobank](https://www.ukbiobank.ac.uk). A biobank is a large medical repository, containing linked genetic and health information. Using a combination of genetic data and health information about disease outcomes, it's possible for researchers to identify genetic variants that contribute to disease risk. 
 
-# What is this website?
+Making new polygenic scores is a complicated data science process that involves tuning hyperparameters and validating how well scores generalise on new data across different ancestry groups. Validated scores are often published in the [PGS Catalog](https://www.pgscatalog.org) for people to reuse.
 
-This website complements a published benchmark of PGS development methods across five European biobanks, available below:
+# How do people use polygenic scores?
 
-> Remo's fantastic paper, the best journal ever, August 2023 (wow super fast)
+After a PGS is made the scoring file (a list of variants and effect weights) can be uploaded to the PGS Catalog for people to reuse. If you have some human genetic data it's possible to use published scoring files to predict genetic predisposition for traits. Reusing published scores is much simpler than making new PGS, especially if you use the [PGS Catalog Calculator](https://github.com/PGScatalog/pgsc_calc) 👀
 
-The analysis is complex, and the aim of the interactive visualisations on this website is to make the benchmark results clearer.
+# About this website
 
 ## Who might find the website useful?
 
@@ -24,11 +32,14 @@ You won't find this website useful if you're browsing the PGS Catalog and are tr
 
 ## What work did you do?
 
-Some description about 5 different biobanks across Europe.
+* We evaluated scores from seven methods in five biobanks across 16 endpoints, [building on the work done by GenoPred](https://opain.github.io/GenoPred/)
+* We conducted meta-analyses to quantify the effects of method choice, hyperparameter tuning, method ensembling and target biobank on PRS performance
+* We published interactive visualisations here to summarise and explain the work described above
+
 
 ## Who made this website?
 
-INTERVENE consortium explanation.
+[INTERVENE](https://www.interveneproject.eu/who-we-are) is an international and interdisciplinary consortium that seeks to develop and implement next-generation tools for AI-facilitated personalised medicine.
 
 ## Are the data available to download?
 
@@ -36,6 +47,12 @@ The data and website code are open source and permissively licensed:
 
 * The data are published in an [R data package](https://github.com/intervene-EU-H2020/prsCompaR). Have fun! 
 * The website is [built with Quarto, R, and Observable JS](https://github.com/intervene-EU-H2020/prs-method-compare)
+
+## How do I get help?
+
+If something isn't clear or you have questions, please feel free [to open an issue on Github.](https://github.com/intervene-EU-H2020/prs-method-compare/issues/new)
+
+
 
 ```{r}
 #| echo: false

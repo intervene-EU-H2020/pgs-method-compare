@@ -8,6 +8,8 @@ Using an ensemble of scores, each created using a different PGS development meth
 
 Try exploring the effect size for different phenotypes, metrics, or methods below.
 
+## Explore the data
+
 ```{r setup}
 #| echo: false
 #| message: false

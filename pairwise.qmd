@@ -8,6 +8,8 @@ If you're using [pt.clump](glossary.html) (without cross validation) to develop 
 
 Other phenotypes show different patterns. Try changing the baseline method and adjusting the phenotype below.
 
+## Explore the data
+
 ```{r}
 #| echo: false
 #| message: false
