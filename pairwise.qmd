@@ -2,7 +2,7 @@
 title: "Pairwise method comparison"
 ---
 
-## What does it mean? 
+## What does it mean?
 
 If you're using [pt.clump](glossary.html) (without cross validation) to develop new polygenic risk scores for type 2 diabetes, you could make a better score by using any of the other tested methods.
 
