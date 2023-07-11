@@ -331,15 +331,15 @@
       "Version": "0.1.0",
       "Source": "GitHub",
       "RemoteType": "github",
+      "RemoteHost": "api.github.com",
       "RemoteUsername": "intervene-EU-H2020",
       "RemoteRepo": "prsCompaR",
       "RemoteRef": "main",
-      "RemoteSha": "64fb27c3f3a2b79e8e8b40003047b95965b247ed",
-      "RemoteHost": "api.github.com",
+      "RemoteSha": "90c6c598c102d2e839928a61db58e18c20164297",
       "Requirements": [
         "R"
       ],
-      "Hash": "3875bf87169f6029462f8ffe2f9eb7e4"
+      "Hash": "e368f90c810a1a98d040d6a20c969924"
     },
     "rappdirs": {
       "Package": "rappdirs",

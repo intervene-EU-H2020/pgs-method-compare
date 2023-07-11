@@ -5,3 +5,97 @@ title: "Meta analysis across biobanks"
 ## What does it mean?
 
 ## Explore the data
+
+```{r setup, echo=FALSE}
+library(prsCompaR)
+data("meta_res")
+endpoints <- unique(meta_res$phenotype)
+ojs_define(meta_res)
+ojs_define(endpoints)
+```
+
+```{ojs}
+//| code-fold: true
+//| panel: input
+
+viewof methods = Inputs.checkbox(
+  ["dbslmm", "sbayesr", "lassosum", "prscs", "ldpred2", "megaprs", "pt.clump", "UKBB.EnsPRS"],
+  { value: ["dbslmm", "sbayesr", "lassosum", "prscs", "ldpred2", "megaprs", "pt.clump", "UKBB.EnsPRS"],
+    label: "Method:",
+    sort: true, 
+    unique: true }
+)
+
+viewof ancestries = Inputs.checkbox(
+  ["EUR", "SAS"],
+  { label: "Ancestry",
+    value: ["EUR", "SAS"],
+    sort: true,
+    unique: true
+  })
+
+viewof endpoint = Inputs.select(endpoints, {value: "T2D", label: "Endpoint:"})
+
+viewof best_method = Inputs.toggle({label: "Show best method:", value: false})
+
+filtered = transpose(meta_res).filter(function(metric) {
+    return methods.includes(metric.method) && 
+      ancestries.includes(metric.ancestry) && 
+      endpoint.includes(metric.phenotype);
+})
+```
+
+```{ojs}
+//| code-fold: true
+Plot.plot({
+  grid: true,
+  // make plot accessible for screen readers
+  ariaLabel: "Explanation of some stuff", // todo: fix
+  marginTop: 50,
+  marginLeft: 150,
+  marginRight: 80,
+  x: {
+    label: "β →",
+    nice: true
+  },
+  y: {
+    label: "Development method"
+  },
+  color: {
+    type: "categorical",
+    legend: false
+  },
+  symbol: {
+    legend: true
+  },
+  style: {
+    fontSize: "12px"
+  },
+  facet: {
+    data: filtered, 
+    x: "ancestry",
+    marginRight: 75,
+    marginTop: 50
+  },
+  fx: {
+    label: "Ancestry"
+  },
+  marks: [
+    Plot.frame(),
+    // link == error bar
+    Plot.link(filtered, {
+      x1: "ci_high",
+      x2:  "ci_low",
+      y1: "method",
+      y2: "method"
+    }),
+    Plot.dot(filtered, {
+      x: "beta",
+      y: "method",
+      fill: "method",
+      symbol: "tuning_type"
+    })
+  ]
+})
+
+```
