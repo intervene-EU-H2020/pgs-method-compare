@@ -10,14 +10,14 @@ https://intervene-eu-h2020.github.io/prs-method-compare/
 
 ## Build notes
 
-To build the website from source you'll need the software installed on your system:
+To build the website from source you'll need:
 
-* [Quarto](https://quarto.org)
-* [R](https://www.r-project.org)
+* [Quarto](https://quarto.org) (tested with `v1.3.433`)
+* [R](https://www.r-project.org) (tested with `v4.3.1`)
 
 And an R package:
 
-* [`renv`](https://rstudio.github.io/renv/articles/renv.html)
+* [`renv`](https://rstudio.github.io/renv/articles/renv.html) (tested with `v1.0`)
 
 Then run:
 
