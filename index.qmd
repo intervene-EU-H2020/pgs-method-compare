@@ -41,6 +41,8 @@ You won't find this website useful if you're browsing the PGS Catalog and are tr
 
 [INTERVENE](https://www.interveneproject.eu/who-we-are) is an international and interdisciplinary consortium that seeks to develop and implement next-generation tools for AI-facilitated personalised medicine.
 
+The Genetic Data Platform team at [EMBL-EBI](https://www.ebi.ac.uk/) built this website as an INTERVENE partner with Remo Monti at the [Hasso Plattner Institut](https://hpi.de).
+
 ## Are the data available to download?
 
 The data and website code are open source and permissively licensed:
@@ -51,21 +53,3 @@ The data and website code are open source and permissively licensed:
 ## How do I get help?
 
 If something isn't clear or you have questions, please feel free [to open an issue on Github.](https://github.com/intervene-EU-H2020/prs-method-compare/issues/new)
-
-
-
-```{r}
-#| echo: false
-
-# n taken from: https://www.interveneproject.eu/who-we-are
-biobank_geo_data <- tibble::tribble(
-  ~latitude,  ~longitude, ~bb, ~n,
-  53.395399745894586, -2.180809763111116, "UK Biobank", 500000,
-  51.5168136896447, -0.06164507552512638, "Genes & Health", 100000,
-  58.37306995058682, 26.71770667106068, "Estonia Biobank", 200000,
-  63.739797063187694, 11.290036844327096, "HUNT Biobank", 100000,
-  60.17469210590568, 24.950115192601018, "FinnGen", 500000
-)
-
-#ojs_define(biobank_geo_data)
-```
