@@ -10,20 +10,15 @@ A simple explanation of meta analysis.
 
 ### Effect sizes
 
-```{r setup, echo=FALSE, message=FALSE}
+```{r setup}
+#| code-fold: true
 library(prsCompaR)
-library(dplyr)
-
-data("meta_res")
-data("pv_mrg")
-
-pv_mrg %>%
-  mutate(relative_beta_diff = beta_diff / beta_y,
-         relative_ci_high_diff = ci_high_diff / beta_y,
-         relative_ci_low_diff = ci_low_diff / beta_y) -> pv_mrg
-
+# load data from R data package
+data(meta_res)
+data(pv_mrg)
 endpoints <- unique(meta_res$phenotype)
 pairwise_endpoints <- unique(pv_mrg$phenotype)
+# make data ready for observable JS
 ojs_define(meta_res)
 ojs_define(endpoints)
 ojs_define(pv_mrg)
@@ -33,7 +28,6 @@ ojs_define(pairwise_endpoints)
 ```{ojs}
 //| code-fold: true
 //| panel: input
-
 viewof methods = Inputs.checkbox(
   ["dbslmm", "sbayesr", "lassosum", "prscs", "ldpred2", "megaprs", "pt.clump", "UKBB.EnsPRS"],
   { value: ["dbslmm", "sbayesr", "lassosum", "prscs", "ldpred2", "megaprs", "pt.clump", "UKBB.EnsPRS"],
@@ -52,13 +46,22 @@ viewof ancestries = Inputs.checkbox(
 
 viewof endpoint = Inputs.select(endpoints, {value: "T2D", label: "Endpoint:"})
 
-viewof best_method = Inputs.toggle({label: "Show best method:", value: false})
+viewof best_method = Inputs.toggle({ label: "Filter best method?:", values: [["best"], ["best", "notbest"]]})
 
-filtered = transpose(meta_res).filter(function(metric) {
-    return methods.includes(metric.method) && 
-      ancestries.includes(metric.ancestry) && 
-      endpoint.includes(metric.phenotype);
-})
+```
+
+```{ojs}
+//| code-fold: true
+import { aq, op } from '@uwdata/arquero'
+
+filtered = aq.fromJSON(meta_res) 
+  .params({methods: methods, ancestries: ancestries, endpoint: endpoint, best_method: best_method })
+  .filter((d, $) => op.includes($.ancestries, d.ancestry) && 
+    op.includes($.methods, d.method) &&
+    op.includes($.endpoint, d.phenotype))
+  .groupby(['ancestry', 'phenotype'])
+  .derive( { best_method: d => d.beta == op.max(d.beta) ? "best": "notbest" })
+  .filter((d, $) => op.includes($.best_method, d.best_method ))
 ```
 
 ```{ojs}
@@ -136,16 +139,21 @@ viewof method_type = Inputs.radio(["CV", "auto"],
   
 viewof pairwise_endpoint = Inputs.select(pairwise_endpoints, {value: "T2D", label: "Endpoint:"})
 
-
 viewof use_relative = Inputs.radio(["relative", "raw"],
 { label: "Difference metric",
   value: "relative"})
-  
-filtered_pairwise = transpose(pv_mrg).filter(function(x) {
-  return method_y.includes(x.method_y) &&
-      method_type.includes(x.method_type_y) &&
-      pairwise_endpoint.includes(x.phenotype);
-})
+```
+
+```{ojs}
+//| code-fold: true
+filtered_pairwise = aq.fromJSON(pv_mrg)
+  .derive({ relative_beta_diff: d => d.beta_diff / d.beta_y,
+    relative_ci_high_diff: d => d.ci_high_diff / d.beta_y,
+    relative_ci_low_diff: d => d.ci_low_diff / d.beta_y })
+  .params({endpoint: pairwise_endpoint, method_y: method_y, method_type: method_type})
+  .filter((d, $) => op.includes($.method_type, d.method_type_y ) &&
+    op.includes($.method_y, d.method_y) &&
+    op.includes($.endpoint, d.phenotype ))
 ```
 
 ```{ojs}

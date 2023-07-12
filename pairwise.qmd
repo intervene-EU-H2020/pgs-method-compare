@@ -10,26 +10,13 @@ Other phenotypes show different patterns. Try changing the baseline method and a
 
 ## Explore the data
 
-```{r}
-#| echo: false
-#| message: false
-library(dplyr)
+```{r setup}
+#| code-fold: true
 library(prsCompaR)
-data(dst)
-```
-
-```{r}
-#| echo: false
-#| message: false
-dst %>%
-  select(method_x, bbid, ancestry, method_x, method_type_x, beta_diff, beta_y, ci_low_diff, ci_high_diff, phenotype, method_y, method_type_y) %>%
-  mutate(relative_beta_diff = beta_diff / beta_y,
-         relative_ci_high_diff = ci_high_diff / beta_y,
-         relative_ci_low_diff = ci_low_diff / beta_y) -> pairwise
-
+data(dst) # load data from R package
 endpoints <- unique(metrics$phenotype)
-
-ojs_define(pairwise)
+# pass data to observable JS
+ojs_define(dst)
 ojs_define(endpoints)
 ```
 
@@ -56,12 +43,6 @@ viewof endpoint = Inputs.select(endpoints, {value: "T2D", label: "Endpoint:"})
 viewof use_relative = Inputs.radio(["relative", "raw"],
 { label: "Difference metric",
   value: "relative"})
-  
-filtered = transpose(pairwise).filter(function(x) {
-  return method_y.includes(x.method_y) &&
-      method_type.includes(x.method_type_y) &&
-      endpoint.includes(x.phenotype);
-})
 ```
 
 ```{ojs}
@@ -73,6 +54,22 @@ x_map = ({ "relative": relative_map, "raw": beta_map })
 
 // some methods only have one method type, so disable the radio button
 disable_method_type = ({ "CV": ["prscs", "sbayesr", "dbslmm"], "auto": ["UKBB.EnsPRS"]})
+```
+
+```{ojs}
+//| code-fold: true
+
+import { aq, op } from '@uwdata/arquero'
+
+filtered = aq.fromJSON(dst)
+  .select("method_x", "bbid", "ancestry", "method_x", "method_type_x", "beta_diff", "beta_y", "ci_low_diff", "ci_high_diff", "phenotype", "method_y", "method_type_y")
+  .derive({ relative_beta_diff: d => d.beta_diff / d.beta_y,
+    relative_ci_high_diff: d => d.ci_high_diff / d.beta_y,
+    relative_ci_low_diff: d => d.ci_low_diff / d.beta_y })
+  .params({endpoint: endpoint, method_y: method_y, method_type: method_type})
+  .filter((d, $) => op.includes($.method_type, d.method_type_y ) &&
+    op.includes($.method_y, d.method_y) &&
+    op.includes($.endpoint, d.phenotype ))
 ```
 
 ```{ojs}

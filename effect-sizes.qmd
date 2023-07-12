@@ -20,24 +20,6 @@ ojs_define(metrics)
 ojs_define(endpoints)
 ```
 
-
-```{ojs}
-//| code-fold: true
-
-import { aq, op } from '@uwdata/arquero'
-
-// use arquero to dynamically filter and mutate data client-side
-filtered = aq.fromJSON(metrics)
-  .params({ biobanks: biobanks, methods: methods, ancestries: ancestries, endpoint: endpoint, best_method: best_method })
-  .filter((d, $) => op.includes($.biobanks, d.bbid) &&
-    op.includes($.ancestries, d.ancestry) &&
-    op.includes($.methods, d.method) &&
-    op.includes($.endpoint, d.phenotype))
-  .groupby(['bbid', 'ancestry', 'phenotype'])
-  .derive( { best_method: d => d.BETA == op.max(d.BETA) ? "best": "notbest" })
-  .filter((d, $) => op.includes($.best_method, d.best_method ))
-```
-
 ```{ojs}
 //| code-fold: true
 //| panel: input
@@ -84,6 +66,23 @@ r2_map = new Map([["x_label", "R²"], ["x", "R2_OBS"], ["errorbar_high", "R2_OBS
 or_map = new Map([["x_label", "Odds Ratio"], ["x", "OR"], ["errorbar_high", "OR_CI_HIGH"], ["errorbar_low", "OR_CI_LOW"]])
 
 metrics_map = ({ "BETA": beta_map, "AUC": auc_map, "R2": r2_map, "OR": or_map })
+```
+
+```{ojs}
+//| code-fold: true
+
+import { aq, op } from '@uwdata/arquero'
+
+// use arquero to dynamically filter and mutate data client-side
+filtered = aq.fromJSON(metrics)
+  .params({ biobanks: biobanks, methods: methods, ancestries: ancestries, endpoint: endpoint, best_method: best_method })
+  .filter((d, $) => op.includes($.biobanks, d.bbid) &&
+    op.includes($.ancestries, d.ancestry) &&
+    op.includes($.methods, d.method) &&
+    op.includes($.endpoint, d.phenotype))
+  .groupby(['bbid', 'ancestry', 'phenotype'])
+  .derive( { best_method: d => d.BETA == op.max(d.BETA) ? "best": "notbest" })
+  .filter((d, $) => op.includes($.best_method, d.best_method ))
 ```
 
 ```{ojs}
