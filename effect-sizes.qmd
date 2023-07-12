@@ -13,23 +13,29 @@ Try exploring the effect size for different phenotypes, metrics, or methods belo
 ```{r setup}
 #| echo: false
 #| message: false
-library(dplyr)
 library(prsCompaR)
 data(metrics)
+endpoints <- unique(metrics$phenotype)
+ojs_define(metrics)
+ojs_define(endpoints)
 ```
 
-```{r}
-#| echo: false
-metrics %>%
-  group_by(bbid, ancestry, phenotype) %>%
-  mutate(best_method = ifelse(BETA == max(BETA), TRUE, FALSE)) -> metrics_annotated
 
-endpoints <- unique(metrics$phenotype)
-prs_methods <- unique(metrics$method)
-plot_data <- metrics_annotated
+```{ojs}
+//| code-fold: true
 
-ojs_define(plot_data)
-ojs_define(endpoints)
+import { aq, op } from '@uwdata/arquero'
+
+// use arquero to dynamically filter and mutate data client-side
+filtered = aq.fromJSON(metrics)
+  .params({ biobanks: biobanks, methods: methods, ancestries: ancestries, endpoint: endpoint, best_method: best_method })
+  .filter((d, $) => op.includes($.biobanks, d.bbid) &&
+    op.includes($.ancestries, d.ancestry) &&
+    op.includes($.methods, d.method) &&
+    op.includes($.endpoint, d.phenotype))
+  .groupby(['bbid', 'ancestry', 'phenotype'])
+  .derive( { best_method: d => d.BETA == op.max(d.BETA) ? "best": "notbest" })
+  .filter((d, $) => op.includes($.best_method, d.best_method ))
 ```
 
 ```{ojs}
@@ -66,22 +72,7 @@ viewof chosen_metric = Inputs.radio(new Map([["β", "BETA"], ["Area Under Curve 
 
 viewof endpoint = Inputs.select(endpoints, {value: "T2D", label: "Endpoint:"})
 
-viewof best_method = Inputs.toggle({label: "Show best method:", value: false})
-
-filtered = transpose(plot_data).filter(function(metric) {
-  if (best_method) {
-    // don't filter based on method twice
-    return ancestries.includes(metric.ancestry) && 
-      endpoint.includes(metric.phenotype) && 
-      metric.best_method == best_method;
-  } else {
-    return  biobanks.includes(metric.bbid) && 
-      methods.includes(metric.method) && 
-      ancestries.includes(metric.ancestry) && 
-      endpoint.includes(metric.phenotype);
-  }
-})
-
+viewof best_method = Inputs.toggle({ label: "Filter best method?:", values: [["best"], ["best", "notbest"]]})
 ```
 
 ```{ojs}
@@ -92,7 +83,7 @@ auc_map = new Map([["x_label", "AUC"], ["x", "AUC_MEDIAN"], ["errorbar_high", "A
 r2_map = new Map([["x_label", "R²"], ["x", "R2_OBS"], ["errorbar_high", "R2_OBS_CI_HIGH"], ["errorbar_low", "R2_OBS_CI_LOW"]])
 or_map = new Map([["x_label", "Odds Ratio"], ["x", "OR"], ["errorbar_high", "OR_CI_HIGH"], ["errorbar_low", "OR_CI_LOW"]])
 
-metrics = ({ "BETA": beta_map, "AUC": auc_map, "R2": r2_map, "OR": or_map })
+metrics_map = ({ "BETA": beta_map, "AUC": auc_map, "R2": r2_map, "OR": or_map })
 ```
 
 ```{ojs}
@@ -106,7 +97,7 @@ Plot.plot({
   marginLeft: 150,
   marginRight: 80,
   x: {
-    label: metrics[chosen_metric].get("x_label") + " →",
+    label: metrics_map[chosen_metric].get("x_label") + " →",
     nice: true
   },
   y: {
@@ -139,13 +130,13 @@ Plot.plot({
     Plot.frame(),
     // link == error bar
     Plot.link(filtered, {
-      x1: metrics[chosen_metric].get("errorbar_low"),
-      x2:  metrics[chosen_metric].get("errorbar_high"),
+      x1: metrics_map[chosen_metric].get("errorbar_low"),
+      x2:  metrics_map[chosen_metric].get("errorbar_high"),
       y1: "method",
       y2: "method"
     }),
     Plot.dot(filtered, {
-      x:  metrics[chosen_metric].get("x"), 
+      x:  metrics_map[chosen_metric].get("x"), 
       y: "method",
       fill: "method",
       symbol: "method_type"
