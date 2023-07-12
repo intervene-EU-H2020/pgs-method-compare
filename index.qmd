@@ -6,6 +6,10 @@ This website complements a published benchmark of polygenic score development me
 
 The analysis is complex, and the aim of the interactive visualisations on this website is to make the benchmark results clearer.
 
+::: {.callout-tip title="Get started"}
+Check out a [visualisation of effect sizes](effect-sizes.qmd) or compare [methods directly](pairwise.qmd)
+:::
+
 # What is a polygenic score?
 
 From the [PGS Catalog](https://www.pgscatalog.org):
