@@ -4,7 +4,8 @@ title: "Meta analysis across biobanks"
 
 ## What does it mean?
 
-A simple explanation of meta analysis.
+Instead of comparing biobanks separately, we can pool information across all of 
+the biobanks and perform a meta-analysis, which improves the fidelity of our [effect size](effect-sizes.qmd) and [pairwise comparison](pairwise.qmd) benchmarks.
 
 ## Explore the data
 
