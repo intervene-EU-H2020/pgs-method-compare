@@ -29,7 +29,16 @@ Is it necessary to include links to project numbers?
 
 # Genetic ancestry
 
-Explanation of ancestry labels, criteria, and limitations of continental labels. Link to NASEM report?
+We use two population descriptors in this work:
+
+* EUR
+* SAS
+
+(See NASEM report, Chapter 5, p114)
+
+These population descriptors were inherited from the 1000 Genomes project.
+
+The labels were assigned by... (short explanation of methods, PCA against a reference panel?). Our rationale for using these population descriptors is that we aimed to maximise statistical power across multiple populations, and the surveyed biobanks are quite homogeneous. Using these population descriptors allowed us to maximise statistical power when analysing performance across multiple ancestral groups. The use of continental labels as population descriptors is a limitation of this work. 
 
 # Metrics
 
