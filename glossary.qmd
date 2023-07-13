@@ -29,16 +29,14 @@ Is it necessary to include links to project numbers?
 
 # Genetic ancestry
 
-We use two population descriptors in this work:
+We use two genetic ancestry groups in this work, which were inherited from the 1000 Genomes (1KG) project:
 
-* EUR
-* SAS
+* EUR: People similar to 1KG-EUR (originally defined as a European superpopulation)
+* SAS: People similar to 1KG-SAS (originally defined as a South Asian superpopulation)
 
-(See NASEM report, Chapter 5, p114)
+These labels were assigned to individuals by measuring their genetic similarity to these groups, using the 1000 Genomes dataset as a reference panel. Our rationale for using these groups is that we aimed to maximise statistical power across multiple populations, and the population of the analysed biobanks are majority 1KG-EUR-like. 
 
-These population descriptors were inherited from the 1000 Genomes project.
-
-The labels were assigned by... (short explanation of methods, PCA against a reference panel?). Our rationale for using these population descriptors is that we aimed to maximise statistical power across multiple populations, and the surveyed biobanks are quite homogeneous. Using these population descriptors allowed us to maximise statistical power when analysing performance across multiple ancestral groups. The use of continental labels as population descriptors is a limitation of this work. 
+Using these group labels allowed us to maximise statistical power when analysing performance across multiple ancestral groups. This is important because PGS performance can be very different across genetic ancestry groups. The use of continental labels as group labels is a limitation of this work.
 
 # Metrics
 
