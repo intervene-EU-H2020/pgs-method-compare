@@ -2,10 +2,6 @@
 
 A website that describes the performance of PRS development methods across five European biobanks.
 
-The website is currently hosted at:
-
-https://intervene-eu-h2020.github.io/prs-method-compare/
-
 🚨 This repository is in under active development with no stable releases available yet 🚨
 
 ## Build notes
