@@ -3,6 +3,8 @@ project:
 
 website:
   title: "PRS method benchmarks"
+  site-url: 'https://prs-method-compare.pages.dev/'
+  site-path: '/'
   navbar:
     tools:
     - icon: twitter
