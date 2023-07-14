@@ -33,5 +33,7 @@ format:
     css: styles.css
     toc: true
 
+    doi: DOI-XXX
+    date-modified: today
 editor: visual
 
