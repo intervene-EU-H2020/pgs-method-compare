@@ -38,6 +38,5 @@ jobs:
           accountId: d67af2e6153b82c798b018f38642d480
           projectName: prs-method-compare
           directory: _site
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           branch: main
           
