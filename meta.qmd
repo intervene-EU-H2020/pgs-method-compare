@@ -9,6 +9,7 @@ the biobanks and perform a meta-analysis, which improves the fidelity of our [ef
 
 ## Explore the data
 
+These interactive plots corresponds to Figure 1B and **Supplementary Figures XX** in the published article. 
 ### Effect sizes
 
 ```{r setup}

@@ -10,6 +10,8 @@ Try exploring the effect size for different phenotypes, metrics, or methods belo
 
 ## Explore the data
 
+This interactive plot corresponds to Figure 1A and **Supplementary Figures XX** in the published article. 
+
 ```{r setup}
 #| echo: false
 #| message: false

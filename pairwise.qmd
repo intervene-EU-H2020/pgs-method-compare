@@ -10,6 +10,8 @@ Other phenotypes show different patterns. Try changing the baseline method and a
 
 ## Explore the data
 
+This interactive plot corresponds to Figure 1C and **Supplementary Figures XX** in the published article. 
+
 ```{r setup}
 #| code-fold: true
 library(prsCompaR)
