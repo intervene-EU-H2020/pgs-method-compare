@@ -32,8 +32,9 @@ format:
     theme: cosmo
     css: styles.css
     toc: true
-
     doi: DOI-XXX
     date-modified: today
+    include-in-header: 
+      - file: analytics.js
 editor: visual
 
