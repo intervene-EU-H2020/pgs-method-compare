@@ -34,7 +34,6 @@ format:
     toc: true
     doi: DOI-XXX
     date-modified: today
-    include-in-header: 
-      - file: analytics.js
+    
 editor: visual
 
