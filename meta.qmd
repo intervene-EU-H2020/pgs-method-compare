@@ -15,7 +15,7 @@ These interactive plots corresponds to Figure 1B and **Supplementary Figures XX*
 
 ```{r setup}
 #| code-fold: true
-library(prsCompaR)
+library(pgsCompaR)
 # load data from R data package
 data(meta_res)
 data(pv_mrg)

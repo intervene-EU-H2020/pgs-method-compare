@@ -15,7 +15,7 @@ This interactive plot corresponds to Figure 1A and **Supplementary Figures XX** 
 ```{r setup}
 #| echo: false
 #| message: false
-library(prsCompaR)
+library(pgsCompaR)
 data(metrics)
 endpoints <- unique(metrics$phenotype)
 ojs_define(metrics)
