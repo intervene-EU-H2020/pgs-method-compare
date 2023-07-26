@@ -56,4 +56,4 @@ The data and website code are open source and permissively licensed:
 
 ## How do I get help?
 
-If something isn't clear or you have questions, please feel free [to open an issue on Github.](https://github.com/intervene-EU-H2020/prs-method-compare/issues/new)
+If something isn't clear or you have questions, please feel free [to open an issue on Github.](https://github.com/intervene-EU-H2020/pgs-method-compare/issues/new)
