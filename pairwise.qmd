@@ -14,7 +14,7 @@ This interactive plot corresponds to Figure 1C and **Supplementary Figures XX** 
 
 ```{r setup}
 #| code-fold: true
-library(prsCompaR)
+library(pgsCompaR)
 data(dst) # load data from R package
 endpoints <- unique(metrics$phenotype)
 # pass data to observable JS

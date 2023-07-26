@@ -37,7 +37,7 @@ You won't find this website useful if you're browsing the PGS Catalog and are tr
 ## What work did you do?
 
 * We evaluated scores from seven methods in five biobanks across 16 endpoints, [building on the work done by GenoPred](https://opain.github.io/GenoPred/)
-* We conducted meta-analyses to quantify the effects of method choice, hyperparameter tuning, method ensembling and target biobank on PRS performance
+* We conducted meta-analyses to quantify the effects of method choice, hyperparameter tuning, method ensembling and target biobank on PGS performance
 * We published interactive visualisations here to summarise and explain the work described above
 
 
@@ -51,9 +51,9 @@ The Genetic Data Platform team at [EMBL-EBI](https://www.ebi.ac.uk/) built this 
 
 The data and website code are open source and permissively licensed:
 
-* The data are published in an [R data package](https://github.com/intervene-EU-H2020/prsCompaR). Have fun! 
-* The website is [built with Quarto, R, and Observable JS](https://github.com/intervene-EU-H2020/prs-method-compare)
+* The data are published in an [R data package](https://github.com/intervene-EU-H2020/pgsCompaR). Have fun! 
+* The website is [built with Quarto, R, and Observable JS](https://github.com/intervene-EU-H2020/pgs-method-compare)
 
 ## How do I get help?
 
-If something isn't clear or you have questions, please feel free [to open an issue on Github.](https://github.com/intervene-EU-H2020/prs-method-compare/issues/new)
+If something isn't clear or you have questions, please feel free [to open an issue on Github.](https://github.com/intervene-EU-H2020/pgs-method-compare/issues/new)

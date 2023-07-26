@@ -2,8 +2,8 @@ project:
   type: website
 
 website:
-  title: "PRS method benchmarks"
-  site-url: 'https://prs-method-compare.pages.dev/'
+  title: "PGS method benchmarks"
+  site-url: 'https://pgs-method-compare.pages.dev/'
   site-path: '/'
   navbar:
     tools:
@@ -12,9 +12,9 @@ website:
     - icon: github
       menu:
         - text: Source
-          url:  https://github.com/intervene-EU-H2020/prs-method-compare
+          url:  https://github.com/intervene-EU-H2020/pgs-method-compare
         - text: Report a bug
-          url:  https://github.com/intervene-EU-H2020/prs-method-compare/issues/new
+          url:  https://github.com/intervene-EU-H2020/pgs-method-compare/issues/new
     left:
       - href: index.qmd
         text: Home

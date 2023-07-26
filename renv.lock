@@ -253,20 +253,20 @@
       ],
       "Hash": "18e9c28c1d3ca1560ce30658b22ce104"
     },
-    "prsCompaR": {
-      "Package": "prsCompaR",
+    "pgsCompaR": {
+      "Package": "pgsCompaR",
       "Version": "0.1.0",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteHost": "api.github.com",
       "RemoteUsername": "intervene-EU-H2020",
-      "RemoteRepo": "prsCompaR",
+      "RemoteRepo": "pgsCompaR",
       "RemoteRef": "main",
-      "RemoteSha": "fdbb1e50b6d8daf864eee2fdfc4f9a303fc93232",
+      "RemoteSha": "ed862fae3915cf2617a29eba1bf7f0c978f99db3",
       "Requirements": [
         "R"
       ],
-      "Hash": "7c4252a04ca601b27fe1d9036cd374a5"
+      "Hash": "0b709267a85d91bb51241675a865d13d"
     },
     "rappdirs": {
       "Package": "rappdirs",

@@ -34,6 +34,8 @@ We use two genetic ancestry groups in this work, which were inherited from the 1
 * EUR: People similar to 1KG-EUR (originally defined as a European superpopulation)
 * SAS: People similar to 1KG-SAS (originally defined as a South Asian superpopulation)
 
+how is similarity defined? by what measure?
+
 These labels were assigned to individuals by measuring their genetic similarity to these groups, using the 1000 Genomes dataset as a reference panel. Our rationale for using these groups is that we aimed to maximise statistical power across multiple populations, and the population of the analysed biobanks are majority 1KG-EUR-like. 
 
 Using these group labels allowed us to maximise statistical power when analysing performance across multiple ancestral groups. This is important because PGS performance can be very different across genetic ancestry groups. The use of continental labels as group labels is a limitation of this work.
