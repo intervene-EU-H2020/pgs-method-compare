@@ -2,7 +2,7 @@ project:
   type: website
 
 website:
-  title: "PRS method benchmarks"
+  title: "PGS method benchmarks"
   site-url: 'https://pgs-method-compare.pages.dev/'
   site-path: '/'
   navbar:

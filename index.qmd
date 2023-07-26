@@ -37,7 +37,7 @@ You won't find this website useful if you're browsing the PGS Catalog and are tr
 ## What work did you do?
 
 * We evaluated scores from seven methods in five biobanks across 16 endpoints, [building on the work done by GenoPred](https://opain.github.io/GenoPred/)
-* We conducted meta-analyses to quantify the effects of method choice, hyperparameter tuning, method ensembling and target biobank on PRS performance
+* We conducted meta-analyses to quantify the effects of method choice, hyperparameter tuning, method ensembling and target biobank on PGS performance
 * We published interactive visualisations here to summarise and explain the work described above
 
 
