@@ -16,16 +16,16 @@ Is it necessary to include links to project numbers?
 
 # Polygenic score development methods
 
-| Method                                            | Reference                                                                                                                                                      |
+| Method                                            | Reference                                                                                                                                                                      |
 |-------------------------------|-----------------------------------------|
-| [DBSLMM](https://biostat0903.github.io/DBSLMM/)   | Sheng Yang, Xiang Zhou (2019). Accurate and Scalable Construction of Polygenic Scores in Large Biobank Data Sets. bioRxiv.                                     |
-| [lassosum](https://github.com/tshmak/lassosum/)   | Mak et al (2017) Polygenic scores via penalized regression on summary statistics. Genetic Epidemiology 41(6) 469-480                                           |
-| [LDpred2](https://github.com/privefl/bigsnpr)     | Privé, Florian, et al. "LDpred2: better, faster, stronger." Bioinformatics 36.22-23 (2020): 5424-5431.                                                         |
-| [megaPRS](https://dougspeed.com/megaprs/)         | TODO                                                                                                                                                           |
-| [PRS-CS](https://github.com/getian107/PRScs)      | T Ge, CY Chen, Y Ni, YCA Feng, JW Smoller. Polygenic Prediction via Bayesian Regression and Continuous Shrinkage Priors. Nature Communications, 10:1776, 2019. |
-| pt.clump                                          | TODO                                                                                                                                                           |
-| [sbayesr](https://cnsgenomics.com/software/gctb/) | TODO                                                                                                                                                           |
-| UKBB.EnsPRS                                       | TODO                                                                                                                                                           |
+| [DBSLMM](https://biostat0903.github.io/DBSLMM/)   | Yang, S. & Zhou, X. Accurate and Scalable Construction of Polygenic Scores in Large Biobank Data Sets. The American Journal of Human Genetics 106, 679–693 (2020).             |
+| [lassosum](https://github.com/tshmak/lassosum/)   | Mak, T. S. H., Porsch, R. M., Choi, S. W., Zhou, X. & Sham, P. C. Polygenic scores via penalized regression on summary statistics. Genetic Epidemiology 41, 469–480 (2017).    |
+| [LDpred2](https://github.com/privefl/bigsnpr)     | Privé, F., Arbel, J. & Vilhjálmsson, B. J. LDpred2: Better, faster, stronger. Bioinformatics 36, 5424–5431 (2020).                                                             |
+| [MegaPRS](https://dougspeed.com/megaprs/)         | Zhang, Q., Privé, F., Vilhjálmsson, B. & Speed, D. Improved genetic prediction of complex traits from individual-level data or summary statistics. Nat Commun 12, 4192 (2021). |
+| [PRS-CS](https://github.com/getian107/PRScs)      | Ge, T., Chen, C.-Y., Ni, Y., Feng, Y.-C. A. & Smoller, J. W. Polygenic prediction via Bayesian regression and continuous shrinkage priors. Nat Commun 10, 1776 (2019).         |
+| pt.clump                                          | TODO                                                                                                                                                                           |
+| [sbayesr](https://cnsgenomics.com/software/gctb/) | Lloyd-Jones, L. R. et al. Improved polygenic prediction by Bayesian multiple regression on summary statistics. Nat Commun 10, 5086 (2019).                                     |
+| UKBB.EnsPRS                                       | TODO                                                                                                                                                                           |
 
 # Genetic ancestry
 
@@ -36,9 +36,7 @@ We use two genetic ancestry groups in this work, which were inherited from the 1
 
 how is similarity defined? by what measure?
 
-These labels were assigned to individuals by measuring their genetic similarity to these groups, using the 1000 Genomes dataset as a reference panel. Our rationale for using these groups is that we aimed to maximise statistical power across multiple populations, and the population of the analysed biobanks are majority 1KG-EUR-like. 
-
-Using these group labels allowed us to maximise statistical power when analysing performance across multiple ancestral groups. This is important because PGS performance can be very different across genetic ancestry groups. The use of continental labels as group labels is a limitation of this work.
+These labels were assigned to individuals by measuring their genetic similarity to these groups, using the 1000 Genomes dataset as a reference panel. By performing analyses within ancestry-matched populations, we sought to reduce differences between biobanks that arise mainly from different ancestry composition, and highlight potential performance differences between genetic ancestries. The vast majority of study participants in the UK Biobank, FinnGen, HUNT and Estonia Biobank matched to the 1KG-EUR ancestry group. The only other replicated ancesetry group was 1KG-SAS, matched by participants in the UK Biobank and Genes & Health. The use of continental labels as group labels is a limitation of this work.
 
 # Metrics
 
