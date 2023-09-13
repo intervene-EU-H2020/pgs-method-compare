@@ -40,6 +40,9 @@ These labels were assigned to individuals by measuring their genetic similarity 
 
 # Metrics
 
-| Metric | Explanation |
-| ------ | ----------- | 
-| AUROC  |             | 
+| Metric          | Explanation                                                                                                                                                                                                                                                                                            |
+|-----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| AUROC           | Area Under Receiver Operating CharacteristicThis metric cares only about relative ordering of observations, and is available only for binary traits.                                                                                                                                                   |
+| β               | Standardized regression coefficients. For continuous traits, this is the change in the trait (in standard deviations) per standard deviation of the PGS. For binary traits, this is the change in the log-odds per standard deviation of the PGS.  This is the metric that was used for meta-analyses. |
+| Odds Ratio (OR) | This is the change in the odds ratio per standard deviation of the PGS (exp(β))                                                                                                                                                                                                                        |
+| R²              | This is the variance explained by the PGS on the observed scale for continuous traits, or on the liability scale for continuous traits                                                                                                                                                                 |

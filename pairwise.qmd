@@ -10,7 +10,7 @@ Other phenotypes show different patterns. Try changing the baseline method and a
 
 ## Explore the data
 
-This interactive plot corresponds to Figure 1C and **Supplementary Figures XX** in the published article. 
+This interactive plot corresponds to Figure 1C and **Supplementary Figures XX** in the published article.
 
 ```{r setup}
 #| code-fold: true
@@ -72,6 +72,10 @@ filtered = aq.fromJSON(dst)
   .filter((d, $) => op.includes($.method_type, d.method_type_y ) &&
     op.includes($.method_y, d.method_y) &&
     op.includes($.endpoint, d.phenotype ))
+  
+// need to filter before plotting to prevent empty facets appearing
+eur = filtered.filter(d => d.ancestry == "EUR")
+sas = filtered.filter(d => d.ancestry == "SAS")
 ```
 
 ```{ojs}
@@ -91,13 +95,12 @@ Plot.plot({
     fontSize: "12px"
   },
   facet: {
-    data: filtered, 
+    data: eur, 
     y: "bbid",
     marginRight: 75,
   },
   fy: {
-    label: "Biobank",
-    domain: ["ebb", "finngen", "hunt", "ukbb"]
+    label: "Biobank"
   },
   x: {
     label: x_map[use_relative].get("x_label")
@@ -107,8 +110,7 @@ Plot.plot({
   },
   marks: [
     Plot.frame(),
-    Plot.link(filtered, {
-      filter: (d) => d.ancestry == "EUR",
+    Plot.link(eur, {
       x1: x_map[use_relative].get("error_bar_low"),
       x2: x_map[use_relative].get("error_bar_high"),
       y1: "method_x",
@@ -122,8 +124,7 @@ Plot.plot({
       dy: -5
     }),
     Plot.ruleX([0], {stroke: "lightgray", strokeWidth: 2, strokeDasharray: "4 2"}),
-    Plot.dot(filtered, {
-      filter: (d) => d.ancestry == "EUR",
+    Plot.dot(eur, {
       x: x_map[use_relative].get("x"),
       y: "method_x",
       fill: "method_x",
@@ -146,14 +147,13 @@ Plot.plot({
     fontSize: "12px"
   },
   facet: {
-    data: filtered, 
+    data: sas, 
     y: "bbid",
     marginRight: 75,
     marginTop: 50
   },
   fy: {
-    label: "Biobank",
-    domain: ["gnh", "ukbb"]
+    label: "Biobank"
   },
   x: {
     label: x_map[use_relative].get("x_label")
@@ -163,15 +163,13 @@ Plot.plot({
   },
   marks: [
     Plot.frame(),
-    Plot.dot(filtered, {
-      filter: (d) => d.ancestry == "SAS",
+    Plot.dot(sas, {
       x: x_map[use_relative].get("x"),
       y: "method_x",
       fill: "method_x",
       symbol: "method_type_x"
     }),
-    Plot.link(filtered, {
-      filter: (d) => d.ancestry == "SAS",
+    Plot.link(sas, {
       x1: x_map[use_relative].get("error_bar_low"),
       x2: x_map[use_relative].get("error_bar_high"),
       y1: "method_x",
