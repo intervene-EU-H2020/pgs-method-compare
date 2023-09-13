@@ -25,7 +25,7 @@ Is it necessary to include links to project numbers?
 | [PRS-CS](https://github.com/getian107/PRScs)      | Ge, T., Chen, C.-Y., Ni, Y., Feng, Y.-C. A. & Smoller, J. W. Polygenic prediction via Bayesian regression and continuous shrinkage priors. Nat Commun 10, 1776 (2019).         |
 | pt.clump                                          | TODO                                                                                                                                                                           |
 | [sbayesr](https://cnsgenomics.com/software/gctb/) | Lloyd-Jones, L. R. et al. Improved polygenic prediction by Bayesian multiple regression on summary statistics. Nat Commun 10, 5086 (2019).                                     |
-| UKBB.EnsPRS                                       | TODO                                                                                                                                                                           |
+| UKBB.EnsPRS                                       |                                                                                                                                                                            |
 
 # Genetic ancestry
 
@@ -34,7 +34,6 @@ We use two genetic ancestry groups in this work, which were inherited from the 1
 * EUR: People similar to 1KG-EUR (originally defined as a European superpopulation)
 * SAS: People similar to 1KG-SAS (originally defined as a South Asian superpopulation)
 
-how is similarity defined? by what measure?
 
 These labels were assigned to individuals by measuring their genetic similarity to these groups, using the 1000 Genomes dataset as a reference panel. By performing analyses within ancestry-matched populations, we sought to reduce differences between biobanks that arise mainly from different ancestry composition, and highlight potential performance differences between genetic ancestries. The vast majority of study participants in the UK Biobank, FinnGen, HUNT and Estonia Biobank matched to the 1KG-EUR ancestry group. The only other replicated ancesetry group was 1KG-SAS, matched by participants in the UK Biobank and Genes & Health. The use of continental labels as group labels is a limitation of this work.
 
