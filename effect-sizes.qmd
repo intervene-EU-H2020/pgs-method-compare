@@ -16,15 +16,17 @@ Try exploring the effect size for different phenotypes, metrics, or methods belo
   <dl>
     <dt>AUC</dt>
     <dd>Area Under Receiver Operating Characteristic</dd>
+    <dd>This metric cares only about relative ordering of observations, and is available only for binary traits.</dd>
 
     <dt>β</dt>
-    <dd>Beta!</dd>
+    <dd>Standardized regression coefficients. For continuous traits, this is the change in the trait (in standard deviations) per standard deviation of the PGS. For binary traits, this is the change in the log-odds per standard deviation of the PGS.</dd>
+    <dd>This is the metric that was used for meta-analyses.</dd>
 
     <dt>Odds Ratio (OR)</dt>
-    <dd>Some short explanation</dd>
+    <dd>This is the change in the odds ratio per standard deviation of the PGS (exp(β))</dd>
   
     <dt>R²</dt>
-    <dd>Another short explanation</dd>
+    <dd>This is the variance explained by the PGS on the observed scale for continuous traits, or on the liability scale for continuous traits</dd>
   </dl>
 </details>
 
