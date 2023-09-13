@@ -10,7 +10,26 @@ Try exploring the effect size for different phenotypes, metrics, or methods belo
 
 ## Explore the data
 
-This interactive plot corresponds to Figure 1A and **Supplementary Figures XX** in the published article. 
+<details>
+  <summary>Metrics explanation</summary>
+  
+  <dl>
+    <dt>AUC</dt>
+    <dd>Area Under Receiver Operating Characteristic</dd>
+
+    <dt>β</dt>
+    <dd>Beta!</dd>
+
+    <dt>Odds Ratio (OR)</dt>
+    <dd>Some short explanation</dd>
+  
+    <dt>R²</dt>
+    <dd>Another short explanation</dd>
+  </dl>
+</details>
+
+
+This interactive plot corresponds to Figure 1A and **Supplementary Figures XX** in the published article.
 
 ```{r setup}
 #| echo: false
