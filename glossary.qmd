@@ -2,18 +2,6 @@
 title: "Glossary"
 ---
 
-# Biobanks
-
-Is it necessary to include links to project numbers?
-
-| Biobank               | About |
-|-----------------------|-------|
-| UK BioBank (ukbb)     |       |
-| Genes & Health (gnh)  |       |
-| FinnGen               |       |
-| HUNT                  |       |
-| Estonia Biobank (ebb) |       |
-
 # Polygenic score development methods
 
 | Method                                            | Reference                                                                                                                                                                      |
