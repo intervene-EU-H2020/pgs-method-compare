@@ -3,7 +3,13 @@ title: "Pairwise method comparison"
 ---
 
 <details>
-  <summary>Difference metric explanation</summary>
+<summary>Difference metric explanation</summary>
+  <dl>
+    <dt>Relative</dt>
+    <dd>Placeholder</dd>
+    <dt>Raw</dt>
+    <dd>Placeholder</dd>
+  </dl>
 </details>
 
 This interactive plot corresponds to Figure 1C in the published article.
