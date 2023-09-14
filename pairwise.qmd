@@ -2,18 +2,9 @@
 title: "Pairwise method comparison"
 ---
 
-## What does it mean?
-
-If you're using [pt.clump](glossary.html) (without cross validation) to develop new polygenic risk scores for type 2 diabetes, you could make a better score by using any of the other tested methods.
-
-Other phenotypes show different patterns. Try changing the baseline method and adjusting the phenotype below.
-
-## Explore the data
-
 This interactive plot corresponds to Figure 1C and **Supplementary Figures XX** in the published article.
 
-```{r setup}
-#| code-fold: true
+```{r setup, echo=FALSE}
 library(pgsCompaR)
 data(dst) # load data from R package
 endpoints <- unique(metrics$phenotype)
@@ -23,8 +14,8 @@ ojs_define(endpoints)
 ```
 
 ```{ojs}
-//| code-fold: true
-//| panel: input
+//| echo: false
+//| panel: sidebar
 
 viewof method_y = Inputs.radio(
   ["dbslmm", "sbayesr", "lassosum", "prscs", "ldpred2", "megaprs", "pt.clump", "UKBB.EnsPRS"],
@@ -49,37 +40,7 @@ viewof use_relative = Inputs.radio(["relative", "raw"],
 
 ```{ojs}
 //| echo: false
-
-beta_map = new Map([["x_label", "βₓ - βᵧ"], ["x", "beta_diff"], ["error_bar_low", "ci_low_diff"], ["error_bar_high", "ci_high_diff"]])
-relative_map = new Map([["x_label", "(βₓ - βᵧ) / βᵧ"], ["x", "relative_beta_diff"], ["error_bar_low", "relative_ci_low_diff"], ["error_bar_high", "relative_ci_high_diff"]])
-x_map = ({ "relative": relative_map, "raw": beta_map })
-
-// some methods only have one method type, so disable the radio button
-disable_method_type = ({ "CV": ["prscs", "sbayesr", "dbslmm"], "auto": ["UKBB.EnsPRS"]})
-```
-
-```{ojs}
-//| code-fold: true
-
-import { aq, op } from '@uwdata/arquero'
-
-filtered = aq.fromJSON(dst)
-  .select("method_x", "bbid", "ancestry", "method_x", "method_type_x", "beta_diff", "beta_y", "ci_low_diff", "ci_high_diff", "phenotype", "method_y", "method_type_y")
-  .derive({ relative_beta_diff: d => d.beta_diff / d.beta_y,
-    relative_ci_high_diff: d => d.ci_high_diff / d.beta_y,
-    relative_ci_low_diff: d => d.ci_low_diff / d.beta_y })
-  .params({endpoint: endpoint, method_y: method_y, method_type: method_type})
-  .filter((d, $) => op.includes($.method_type, d.method_type_y ) &&
-    op.includes($.method_y, d.method_y) &&
-    op.includes($.endpoint, d.phenotype ))
-  
-// need to filter before plotting to prevent empty facets appearing
-eur = filtered.filter(d => d.ancestry == "EUR")
-sas = filtered.filter(d => d.ancestry == "SAS")
-```
-
-```{ojs}
-//| echo: false
+//| panel: fill
 
 Plot.plot({
   grid: true,
@@ -186,3 +147,38 @@ Plot.plot({
   ]
 }) 
 ```
+
+```{ojs}
+//| echo: false
+
+beta_map = new Map([["x_label", "βₓ - βᵧ"], ["x", "beta_diff"], ["error_bar_low", "ci_low_diff"], ["error_bar_high", "ci_high_diff"]])
+relative_map = new Map([["x_label", "(βₓ - βᵧ) / βᵧ"], ["x", "relative_beta_diff"], ["error_bar_low", "relative_ci_low_diff"], ["error_bar_high", "relative_ci_high_diff"]])
+x_map = ({ "relative": relative_map, "raw": beta_map })
+
+// some methods only have one method type, so disable the radio button
+disable_method_type = ({ "CV": ["prscs", "sbayesr", "dbslmm"], "auto": ["UKBB.EnsPRS"]})
+```
+
+```{ojs}
+//| echo: false
+
+import { aq, op } from '@uwdata/arquero'
+
+filtered = aq.fromJSON(dst)
+  .select("method_x", "bbid", "ancestry", "method_x", "method_type_x", "beta_diff", "beta_y", "ci_low_diff", "ci_high_diff", "phenotype", "method_y", "method_type_y")
+  .derive({ relative_beta_diff: d => d.beta_diff / d.beta_y,
+    relative_ci_high_diff: d => d.ci_high_diff / d.beta_y,
+    relative_ci_low_diff: d => d.ci_low_diff / d.beta_y })
+  .params({endpoint: endpoint, method_y: method_y, method_type: method_type})
+  .filter((d, $) => op.includes($.method_type, d.method_type_y ) &&
+    op.includes($.method_y, d.method_y) &&
+    op.includes($.endpoint, d.phenotype ))
+  
+// need to filter before plotting to prevent empty facets appearing
+eur = filtered.filter(d => d.ancestry == "EUR")
+sas = filtered.filter(d => d.ancestry == "SAS")
+```
+
+## Conclusion
+
+If you're using [pt.clump](glossary.html) (without cross validation) to develop new polygenic risk scores for type 2 diabetes, you could make a better score by using any of the other tested methods.

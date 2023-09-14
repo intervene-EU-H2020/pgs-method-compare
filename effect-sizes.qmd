@@ -2,14 +2,6 @@
 title: "Polygenic risk score effect sizes"
 ---
 
-## What does it mean?
-
-Using an ensemble of scores, each created using a different PGS development method, can capture a larger effect size for a phenotype. This means that the strength of the relationship between genetic data and phenotype is greater.
-
-Try exploring the effect size for different phenotypes, metrics, or methods below.
-
-## Explore the data
-
 <details>
   <summary>Metrics explanation</summary>
   
@@ -44,8 +36,8 @@ ojs_define(endpoints)
 ```
 
 ```{ojs}
-//| code-fold: true
-//| panel: input
+//| echo: false
+//| panel: sidebar
 
 viewof biobanks = Inputs.checkbox(
   new Map( 
@@ -92,33 +84,8 @@ metrics_map = ({ "BETA": beta_map, "AUC": auc_map, "R2": r2_map, "OR": or_map })
 ```
 
 ```{ojs}
-//| code-fold: true
-
-import { aq, op } from '@uwdata/arquero'
-
-// use arquero to dynamically filter and mutate data client-side
-filtered = aq.fromJSON(metrics)
-  .params({ biobanks: biobanks, methods: methods, ancestries: ancestries, endpoint: endpoint, best_method: best_method })
-  .filter((d, $) => op.includes($.biobanks, d.bbid) &&
-    op.includes($.ancestries, d.ancestry) &&
-    op.includes($.methods, d.method) &&
-    op.includes($.endpoint, d.phenotype))
-  .groupby(['bbid', 'ancestry', 'phenotype'])
-  .derive( { best_method: d => d.BETA == op.max(d.BETA) ? "best": "notbest" })
-  .filter((d, $) => op.includes($.best_method, d.best_method ))
-  // binary traits -> h2l (variance explained on the liability scale)
-  // continuous traits -> R2_OBS (variance explained on the observed scale)
-  // create a new r2 column which selects the correct scale
-  .derive( { 
-    r2: d => d.is_continuous ? d.R2_OBS : d.h2l,
-    r2_high: d => d.is_continuous ? d.R2_OBS_CI_HIGH : d.h2l_ci_high,
-    r2_low: d => d.is_continuous ? d.R2_OBS_CI_LOW : d.h2l_ci_low,
-  })
-```
-
-```{ojs}
-//| code-fold: true
-
+//| echo: false
+//| panel: fill
 Plot.plot({
   grid: true,
   // make plot accessible for screen readers
@@ -173,5 +140,25 @@ Plot.plot({
     })
   ]
 })
-
 ```
+
+```{ojs}
+//| echo: false
+
+import { aq, op } from '@uwdata/arquero'
+
+// use arquero to dynamically filter and mutate data client-side
+filtered = aq.fromJSON(metrics)
+  .params({ biobanks: biobanks, methods: methods, ancestries: ancestries, endpoint: endpoint, best_method: best_method })
+  .filter((d, $) => op.includes($.biobanks, d.bbid) &&
+    op.includes($.ancestries, d.ancestry) &&
+    op.includes($.methods, d.method) &&
+    op.includes($.endpoint, d.phenotype))
+  .groupby(['bbid', 'ancestry', 'phenotype'])
+  .derive( { best_method: d => d.BETA == op.max(d.BETA) ? "best": "notbest" })
+  .filter((d, $) => op.includes($.best_method, d.best_method ))
+```
+
+## Conclusion
+
+Using an ensemble of scores, each created using a different PGS development method, can capture a larger effect size for a phenotype. This means that the strength of the relationship between genetic data and phenotype is greater.
