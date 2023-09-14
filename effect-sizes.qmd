@@ -157,6 +157,14 @@ filtered = aq.fromJSON(metrics)
   .groupby(['bbid', 'ancestry', 'phenotype'])
   .derive( { best_method: d => d.BETA == op.max(d.BETA) ? "best": "notbest" })
   .filter((d, $) => op.includes($.best_method, d.best_method ))
+  // binary traits -> h2l (variance explained on the liability scale)
+  // continuous traits -> R2_OBS (variance explained on the observed scale)
+  // create a new r2 column which selects the correct scale
+  .derive( { 
+     r2: d => d.is_continuous ? d.R2_OBS : d.h2l,
+     r2_high: d => d.is_continuous ? d.R2_OBS_CI_HIGH : d.h2l_ci_high,
+     r2_low: d => d.is_continuous ? d.R2_OBS_CI_LOW : d.h2l_ci_low,
+   })
 ```
 
 ## Conclusion
