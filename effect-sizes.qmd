@@ -18,12 +18,12 @@ title: "Polygenic risk score effect sizes"
     <dd>This is the change in the odds ratio per standard deviation of the PGS (exp(β))</dd>
   
     <dt>R²</dt>
-    <dd>This is the variance explained by the PGS on the observed scale for continuous traits, or on the liability scale for continuous traits</dd>
+    <dd>This is the variance explained by the PGS on the observed scale for continuous traits, or on the liability scale for binary traits</dd>
   </dl>
 </details>
 
 
-This interactive plot corresponds to Figure 1A and **Supplementary Figures XX** in the published article.
+This interactive plot corresponds to Figure 1A and Supplementary Figures 1-5 in the published article.
 
 ```{r setup}
 #| echo: false

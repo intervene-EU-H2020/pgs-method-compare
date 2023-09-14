@@ -2,7 +2,7 @@
 title: "Pairwise method comparison"
 ---
 
-This interactive plot corresponds to Figure 1C and **Supplementary Figures XX** in the published article.
+This interactive plot corresponds to Figure 1C in the published article.
 
 ```{r setup, echo=FALSE}
 library(pgsCompaR)
