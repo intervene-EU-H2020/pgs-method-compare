@@ -6,9 +6,9 @@ Instead of comparing biobanks separately, we can pool information across all of 
 
 ## Explore the data
 
-These interactive plots corresponds to Figure 1B and **Supplementary Figures XX** in the published article.
-
 ### Effect sizes
+
+This figure corresponds to Figure 3A in the published article.
 
 ```{r setup, echo=FALSE}
 library(pgsCompaR)
@@ -120,6 +120,8 @@ filtered = aq.fromJSON(meta_res)
 ```
 
 ### Pairwise method comparison
+
+This figure corresponds to Figure 3A and Table 3 in the accompanying paper.
 
 ```{ojs}
 //| panel: sidebar

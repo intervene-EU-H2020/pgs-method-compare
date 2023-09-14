@@ -23,7 +23,7 @@ title: "Polygenic risk score effect sizes"
 </details>
 
 
-This interactive plot corresponds to Figure 1A and **Supplementary Figures XX** in the published article.
+This interactive plot corresponds to Figure 1A and Supplementary Figures 1-5 in the published article.
 
 ```{r setup}
 #| echo: false
