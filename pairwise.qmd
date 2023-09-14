@@ -2,6 +2,10 @@
 title: "Pairwise method comparison"
 ---
 
+<details>
+  <summary>Difference metric explanation</summary>
+</details>
+
 This interactive plot corresponds to Figure 1C in the published article.
 
 ```{r setup, echo=FALSE}
