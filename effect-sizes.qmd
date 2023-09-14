@@ -85,7 +85,7 @@ viewof best_method = Inputs.toggle({ label: "Filter best method?:", values: [["b
 
 beta_map = new Map([["x_label", "βₓ"], ["x", "BETA"], ["errorbar_high", "BETA_CI_HIGH"], ["errorbar_low", "BETA_CI_LOW"]])
 auc_map = new Map([["x_label", "AUC"], ["x", "AUC_MEDIAN"], ["errorbar_high", "AUC_CI_HIGH"], ["errorbar_low", "AUC_CI_LOW"]])
-r2_map = new Map([["x_label", "R²"], ["x", "R2_OBS"], ["errorbar_high", "R2_OBS_CI_HIGH"], ["errorbar_low", "R2_OBS_CI_LOW"]])
+r2_map = new Map([["x_label", "R²"], ["x", "r2"], ["errorbar_high", "r2_high"], ["errorbar_low", "r2_low"]])
 or_map = new Map([["x_label", "Odds Ratio"], ["x", "OR"], ["errorbar_high", "OR_CI_HIGH"], ["errorbar_low", "OR_CI_LOW"]])
 
 metrics_map = ({ "BETA": beta_map, "AUC": auc_map, "R2": r2_map, "OR": or_map })
@@ -106,6 +106,14 @@ filtered = aq.fromJSON(metrics)
   .groupby(['bbid', 'ancestry', 'phenotype'])
   .derive( { best_method: d => d.BETA == op.max(d.BETA) ? "best": "notbest" })
   .filter((d, $) => op.includes($.best_method, d.best_method ))
+  // binary traits -> h2l (variance explained on the liability scale)
+  // continuous traits -> R2_OBS (variance explained on the observed scale)
+  // create a new r2 column which selects the correct scale
+  .derive( { 
+    r2: d => d.is_continuous ? d.R2_OBS : d.h2l,
+    r2_high: d => d.is_continuous ? d.R2_OBS_CI_HIGH : d.h2l_ci_high,
+    r2_low: d => d.is_continuous ? d.R2_OBS_CI_LOW : d.h2l_ci_low,
+  })
 ```
 
 ```{ojs}
