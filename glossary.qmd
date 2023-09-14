@@ -2,6 +2,26 @@
 title: "Glossary"
 ---
 
+# Endpoint definitions
+
+| Target trait              | GWAS trait                           | Binary or continuous? |
+|---------------------------|--------------------------------------|-----------------------|
+|     Stroke                | Stroke                               | Binary                |
+|     AD                    | AD   or family history of AD         | Binary                |
+|     Rheumatoid arthritis  | Rheumatoid   arthritis               | Binary                |
+|     T2D                   | Type 2 Diabetes                      | Binary                |
+|     Breast cancer         | Breast cancer                        | Binary                |
+|     Prostate cancer       | Prostrate cancer                     | Binary                |
+|     T1D                   | Type 1 Diabetes                      | Binary                |
+|     IBD                   | Inflammatory Bowel Disease           | Binary                |
+|     eGFR                  | estimated glomerular filtration rate | Continuous            |
+|     Height                | Height                               | Continuous            |
+|     Gout                  | Gout                                 | Binary                |
+|     BMI                   | Body Mass Index                      | Continuous            |
+|     HDL                   | high-density lipoprotein             | Continuous            |
+|     HbA1c                 | Glycated hemoglobin                  | Continuous            |
+| Urate                     | Urate                                | Continuous            |
+
 # Polygenic score development methods
 
 | Method                                            | Reference                                                                                                                                                                      |
