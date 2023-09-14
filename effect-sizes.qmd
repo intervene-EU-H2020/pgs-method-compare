@@ -26,7 +26,7 @@ Try exploring the effect size for different phenotypes, metrics, or methods belo
     <dd>This is the change in the odds ratio per standard deviation of the PGS (exp(β))</dd>
   
     <dt>R²</dt>
-    <dd>This is the variance explained by the PGS on the observed scale for continuous traits, or on the liability scale for continuous traits</dd>
+    <dd>This is the variance explained by the PGS on the observed scale for continuous traits, or on the liability scale for binary traits</dd>
   </dl>
 </details>
 
