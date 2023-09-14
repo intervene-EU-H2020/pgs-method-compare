@@ -262,11 +262,11 @@
       "RemoteUsername": "intervene-EU-H2020",
       "RemoteRepo": "pgsCompaR",
       "RemoteRef": "main",
-      "RemoteSha": "41f060b777645aa2223b822f15577d7b54380f1c",
+      "RemoteSha": "8df2b655d9b0029fc3f0a6b3ae3525c34974a133",
       "Requirements": [
         "R"
       ],
-      "Hash": "4c08fad7b1869218e84d2ac1f80eec4d"
+      "Hash": "0c9cffde439d7db39fb131bef95fae32"
     },
     "rappdirs": {
       "Package": "rappdirs",
