@@ -8,15 +8,17 @@ title: "Polygenic risk score effect sizes"
   <dl>
     <dt>AUC</dt>
     <dd>Area Under Receiver Operating Characteristic</dd>
+    <dd>This metric cares only about relative ordering of observations, and is available only for binary traits.</dd>
 
     <dt>β</dt>
-    <dd>Beta!</dd>
+    <dd>Standardized regression coefficients. For continuous traits, this is the change in the trait (in standard deviations) per standard deviation of the PGS. For binary traits, this is the change in the log-odds per standard deviation of the PGS.</dd>
+    <dd>This is the metric that was used for meta-analyses.</dd>
 
     <dt>Odds Ratio (OR)</dt>
-    <dd>Some short explanation</dd>
+    <dd>This is the change in the odds ratio per standard deviation of the PGS (exp(β))</dd>
   
     <dt>R²</dt>
-    <dd>Another short explanation</dd>
+    <dd>This is the variance explained by the PGS on the observed scale for continuous traits, or on the liability scale for continuous traits</dd>
   </dl>
 </details>
 
@@ -75,7 +77,7 @@ viewof best_method = Inputs.toggle({ label: "Filter best method?:", values: [["b
 
 beta_map = new Map([["x_label", "βₓ"], ["x", "BETA"], ["errorbar_high", "BETA_CI_HIGH"], ["errorbar_low", "BETA_CI_LOW"]])
 auc_map = new Map([["x_label", "AUC"], ["x", "AUC_MEDIAN"], ["errorbar_high", "AUC_CI_HIGH"], ["errorbar_low", "AUC_CI_LOW"]])
-r2_map = new Map([["x_label", "R²"], ["x", "R2_OBS"], ["errorbar_high", "R2_OBS_CI_HIGH"], ["errorbar_low", "R2_OBS_CI_LOW"]])
+r2_map = new Map([["x_label", "R²"], ["x", "r2"], ["errorbar_high", "r2_high"], ["errorbar_low", "r2_low"]])
 or_map = new Map([["x_label", "Odds Ratio"], ["x", "OR"], ["errorbar_high", "OR_CI_HIGH"], ["errorbar_low", "OR_CI_LOW"]])
 
 metrics_map = ({ "BETA": beta_map, "AUC": auc_map, "R2": r2_map, "OR": or_map })
@@ -138,7 +140,6 @@ Plot.plot({
     })
   ]
 })
-
 ```
 
 ```{ojs}
