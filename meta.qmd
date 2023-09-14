@@ -139,7 +139,7 @@ viewof method_y = Inputs.radio(
 
 viewof method_type = Inputs.radio(["CV", "auto"],
 { label: "Tuning method:",
-  value: "auto"})
+  value: "CV"})
   
 viewof pairwise_endpoint = Inputs.select(pairwise_endpoints, {value: "T2D", label: "Endpoint:"})
 
