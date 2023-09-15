@@ -6,7 +6,7 @@ title: "Pairwise method comparison"
 <summary>Difference metric explanation</summary>
 <p>Rather than comparing absolute method performance (see [effect sizes](effect-sizes.qmd)), here we compare PGS effect sizes β relative to each other. For this, a baseline PGS against which we compare (baseline method) has to be chosen.</p>
 <p>For each PGS with effect size βₓ, we calculate the difference to the baseline method with effect size βᵧ. Confidence intervals are calculated adjusting for the correlation between PGS x and y. These confidence intervals form the basis of significance tests reported in the manuscript.</p>
-<p>The "raw" differences (βₓ - βᵧ) are on the same scale as the original effect sizes. Relative differenes ((βₓ - βᵧ) / βᵧ) are often reported in methods comparisons, as different phenotypes and target data may have different baseline performance.</p>
+<p>The "raw" differences (βₓ - βᵧ) are on the same scale as the original effect sizes. Relative differences ((βₓ - βᵧ) / βᵧ) are often reported in methods comparisons, as different phenotypes and target data may have different baseline performance.</p>
 </details>
 
 This interactive plot corresponds to Figure 1C in the published article.
