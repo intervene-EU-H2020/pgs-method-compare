@@ -1,0 +1,20 @@
+---
+title: "Acknowledgements"
+---
+
+This project has received funding from the European Union’s Horizon 2020 research and innovation programme under grant agreement No 101016775. This work was funded by the Hasso Plattner Foundation (HPF).   
+
+This research has been conducted using the UK Biobank Resource under Application Number 78537. Ethics approval for the UK Biobank study was obtained from the North West Centre for Research Ethics Committee (11/NW/0382).
+
+The genotyping in Trøndelag Health Study and work presented here was approved by the
+Regional Committee for Ethics in Medical Research, Central Norway (2014/144, 2018/1622,
+2018/411492). All participants signed informed consent for participation and the use of data
+in research.
+
+The activities of the Estonian Biobank are regulated by the Human Genes Research Act, which was adopted in 2000 specifically for the operations of the Estonian Biobank. Individual level data analysis in the Estonia Biobank was carried out under ethical approval 1.1-12/624 from the Estonian Committee on Bioethics and Human Research (Estonian Ministry of Social Affairs), using data according to release application S22, document number 6-7/GI/16259 from the Estonian Biobank.
+
+Genes & Health is/has recently been core-funded by Wellcome (WT102627, WT210561), the Medical Research Council (UK) (M009017, MR/X009777/1, MR/X009920/1), Higher Education Funding Council for England Catalyst, Barts Charity (845/1796), Health Data Research UK (for London substantive site), and research delivery support from the NHS National Institute for Health Research Clinical Research Network (North Thames). Genes & Health is/has recently been funded by Alnylam Pharmaceuticals, Genomics PLC; and a Life Sciences Industry Consortium of Astra Zeneca PLC, Bristol-Myers Squibb Company, GlaxoSmithKline Research and Development Limited, Maze Therapeutics Inc, Merck Sharp & Dohme LLC, Novo Nordisk A/S, Pfizer Inc, Takeda Development Centre Americas Inc. Ethics approval for Genes & Health was obtained from the London South East Research Ethics Committee (IRAS 146051). We thank Social Action for Health, Centre of The Cell, members of our Community Advisory Group, and staff who have recruited and collected data from volunteers. We thank the NIHR National Biosample Centre (UK Biocentre), the Social Genetic & Developmental Psychiatry Centre (King's College London), Wellcome Sanger Institute, and Broad Institute for sample processing, genotyping, sequencing and variant annotation. We thank: Barts Health NHS Trust, NHS Clinical Commissioning Groups (City and Hackney, Waltham Forest, Tower Hamlets, Newham, Redbridge, Havering, Barking and Dagenham), East London NHS Foundation Trust, Bradford Teaching Hospitals NHS Foundation Trust, Public Health England (especially David Wyllie), Discovery Data Service/Endeavour Health Charitable Trust (especially David Stables), Voror Health Technologies Ltd (especially Sophie Don), NHS England (for what was NHS Digital) -  for GDPR-compliant data sharing backed by individual written informed consent. Most of all we thank all of the volunteers participating in Genes & Health.
+
+We would like to thank Vishnu Raj, Giulia Brunelli, Zhiyu Wang, Ying Wang, Kimmo Mattila, Anne Carson, Julius Anckar, Uwe Ohler and all members of INTERVENE who gave feedback, answered questions, or otherwise facilitated the development of this project.
+
+Finally, we'd like to thank all volunteers that participated in each biobank we analysed in this work. 
