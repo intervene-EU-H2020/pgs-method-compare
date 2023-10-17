@@ -114,9 +114,10 @@ Plot.plot({
   y: {
     label: "Development method"
   },
+  // tableau10 theme, manually assigning each method a colour to be consistent
   color: {
-    type: "categorical",
-    legend: false
+    domain: ["dbslmm", "sbayesr", "lassosum", "prscs", "ldpred2", "megaprs", "pt.clump", "UKBB.EnsPRS"],
+    range: ["#5778a4", "#e49444", "#d1615d", "#85b6b2", "#6a9f58", "#e7ca60", "#a87c9f", "#f1a2a9"]
   },
   symbol: {
     legend: true

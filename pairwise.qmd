@@ -3,10 +3,15 @@ title: "Pairwise method comparison"
 ---
 
 <details>
+
 <summary>Difference metric explanation</summary>
+
 <p>Rather than comparing absolute method performance (see [effect sizes](effect-sizes.qmd)), here we compare PGS effect sizes β relative to each other. For this, a baseline PGS against which we compare (baseline method) has to be chosen.</p>
+
 <p>For each PGS with effect size βₓ, we calculate the difference to the baseline method with effect size βᵧ. Confidence intervals are calculated adjusting for the correlation between PGS x and y. These confidence intervals form the basis of significance tests reported in the manuscript.</p>
+
 <p>The "raw" differences (βₓ - βᵧ) are on the same scale as the original effect sizes. Relative differences ((βₓ - βᵧ) / βᵧ) are often reported in methods comparisons, as different phenotypes and target data may have different baseline performance.</p>
+
 </details>
 
 This interactive plot corresponds to Figure 1C in the published article.
@@ -53,8 +58,8 @@ Plot.plot({
   grid: true,
   marginLeft: 150,
   color: {
-    type: "categorical",
-    legend: false
+    domain: ["dbslmm", "sbayesr", "lassosum", "prscs", "ldpred2", "megaprs", "pt.clump", "UKBB.EnsPRS"],
+    range: ["#5778a4", "#e49444", "#d1615d", "#85b6b2", "#6a9f58", "#e7ca60", "#a87c9f", "#f1a2a9"]
   },
   symbol: {
     legend: true
