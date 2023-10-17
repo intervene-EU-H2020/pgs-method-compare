@@ -8,7 +8,7 @@ title: "Glossary"
 |---------------------------|--------------------------------------|-----------------------|
 |     Stroke                | Stroke                               | Binary                |
 |     AD                    | AD   or family history of AD         | Binary                |
-|     Rheumatoid arthritis  | Rheumatoid   arthritis               | Binary                |
+|     RA                    | Rheumatoid arthritis                 | Binary                |
 |     T2D                   | Type 2 Diabetes                      | Binary                |
 |     Breast cancer         | Breast cancer                        | Binary                |
 |     Prostate cancer       | Prostrate cancer                     | Binary                |
