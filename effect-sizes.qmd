@@ -65,11 +65,25 @@ viewof ancestries = Inputs.checkbox(
     unique: true
   })
 
-viewof chosen_metric = Inputs.radio(new Map([["β", "BETA"], ["Area Under Curve (AUC)", "AUC"], ["Odds Ratio (OR)", "OR"], ["R²", "R2"]]), {label: "Metric", value: "BETA"})
+viewof chosen_metric = Inputs.radio(new Map([["β", "BETA"], ["Area Under Curve (AUC)", "AUC"], ["Odds Ratio (OR)", "OR"], ["R²", "R2"]]), {label: "Metric", value: "BETA", disabled: disabled_metrics})
 
 viewof endpoint = Inputs.select(endpoints, {value: "T2D", label: "Endpoint:"})
 
 viewof best_method = Inputs.toggle({ label: "Filter best method?:", values: [["best"], ["best", "notbest"]]})
+```
+
+
+```{ojs}
+//| echo: false
+is_continuous = aq.fromJSON(metrics)
+  .params({ endpoint: endpoint })
+  .filter((d, $) => d.phenotype == $.endpoint)
+  .sample(1, {shuffle: false})
+  .get('is_continuous')
+
+// continuous endpoints only support beta and r2 metrics
+// binary endpoints support all endpoints, r2 is recalculated later
+disabled_metrics = ({ true: ["AUC", "OR"], false: [] })[is_continuous]
 ```
 
 ```{ojs}
