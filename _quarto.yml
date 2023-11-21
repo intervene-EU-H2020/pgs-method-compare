@@ -36,7 +36,7 @@ format:
     theme: cosmo
     css: styles.css
     toc: true
-    doi: DOI-XXX
+    doi: 10.1101/2023.11.20.23298215
     date-modified: today
     
 editor: visual
