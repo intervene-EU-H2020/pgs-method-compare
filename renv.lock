@@ -1,6 +1,6 @@
 {
   "R": {
-    "Version": "4.3.1",
+    "Version": "4.3.2",
     "Repositories": [
       {
         "Name": "CRAN",
@@ -258,15 +258,15 @@
       "Version": "0.1.0",
       "Source": "GitHub",
       "RemoteType": "github",
+      "RemoteHost": "api.github.com",
       "RemoteUsername": "intervene-EU-H2020",
       "RemoteRepo": "pgsCompaR",
-      "RemoteRef": "main",
-      "RemoteSha": "8349b30354b1558227a14af7c053a7fad592ba21",
-      "RemoteHost": "api.github.com",
+      "RemoteRef": "v1.0.0",
+      "RemoteSha": "b49da8f5469443a1e3e9a8eb03ec553ce7529783",
       "Requirements": [
         "R"
       ],
-      "Hash": "ea46db7bfe1c35bc1005efa81a7ef2c9"
+      "Hash": "6337cef67f09dae6b901beaa845a887e"
     },
     "rappdirs": {
       "Package": "rappdirs",
