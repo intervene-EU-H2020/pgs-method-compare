@@ -27,6 +27,6 @@ $ quarto preview # builds and opens website in your browser
 
 The website is permissively licensed with [Apache 2](https://github.com/intervene-EU-H2020/pgs-method-compare/blob/main/LICENSE).
 
-If you reuse data or code from this website in published work please cite our preprint:
+If you reuse data or code from this website in published work please cite our publication, which is also available as [an open access preprint](https://doi.org/10.1101/2023.11.20.23298215):
 
-> Remo Monti, Lisa Eick, Georgi Hudjashov, Kristi Läll, Stavroula Kanoni, Brooke N Wolford, Benjamin Wingfield, Oliver Pain, Sophie Wharrie, Bradley Jermy, Aoife McMahon, Tuomo Hartonen, Henrike O Heyne, Nina Mars, Genes & Health Research Team, Kristian Hveem, Michael Inouye, David A van Heel, Reedik Magi, Pekka Marttinen, Samuli Ripatti, Andrea Ganna, Christoph Lippert. "Evaluation of polygenic scoring methods in five biobanks reveals greater variability between biobanks than between methods and highlights benefits of ensemble learning". medRxiv 2023. doi: https://doi.org/10.1101/2023.11.20.23298215
+> Remo Monti, Lisa Eick, Georgi Hudjashov, Kristi Läll, Stavroula Kanoni, Brooke N. Wolford, Benjamin Wingfield, Oliver Pain, Sophie Wharrie, Bradley Jermy, Aoife McMahon, Tuomo Hartonen, Henrike Heyne, Nina Mars, Samuel Lambert, Kristian Hveem, Michael Inouye, David A. van Heel, Reedik Mägi, Pekka Marttinen, Samuli Ripatti, Andrea Ganna, Christoph Lippert. "Evaluation of polygenic scoring methods in five biobanks shows larger variation between biobanks than methods and finds benefits of ensemble learning" The American Journal of Human Genetics 2024. doi: https://doi.org/10.1016/j.ajhg.2024.06.003
