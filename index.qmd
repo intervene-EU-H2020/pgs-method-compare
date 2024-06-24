@@ -2,7 +2,7 @@
 
 This website complements a [published benchmark of polygenic score development methods across five European biobanks](https://doi.org/10.1101/2023.11.20.23298215):
 
-> Remo Monti, Lisa Eick, Georgi Hudjashov, Kristi Läll, Stavroula Kanoni, Brooke N. Wolford, Benjamin Wingfield, Oliver Pain, Sophie Wharrie, Bradley Jermy, Aoife McMahon, Tuomo Hartonen, Henrike Heyne, Nina Mars, Samuel Lambert, Kristian Hveem, Michael Inouye, David A. van Heel, Reedik Mägi, Pekka Marttinen, Samuli Ripatti, Andrea Ganna, Christoph Lippert, "Evaluation of polygenic scoring methods in five biobanks shows larger variation between biobanks than methods and finds benefits of ensemble learning", The American Journal of Human Genetics 2024. doi: https://doi.org/10.1016/j.ajhg.2024.06.003
+> Remo Monti, Lisa Eick, Georgi Hudjashov, Kristi Läll, Stavroula Kanoni, Brooke N. Wolford, Benjamin Wingfield, Oliver Pain, Sophie Wharrie, Bradley Jermy, Aoife McMahon, Tuomo Hartonen, Henrike Heyne, Nina Mars, Samuel Lambert, Kristian Hveem, Michael Inouye, David A. van Heel, Reedik Mägi, Pekka Marttinen, Samuli Ripatti, Andrea Ganna, Christoph Lippert, "Evaluation of polygenic scoring methods in five biobanks shows larger variation between biobanks than methods and finds benefits of ensemble learning", The American Journal of Human Genetics 2024. doi: [https://doi.org/10.1016/j.ajhg.2024.06.003](https://doi.org/10.1016/j.ajhg.2024.06.003)
 
 The analysis is complex, and the aim of the interactive visualisations on this website is to make the benchmark results clearer.
 
@@ -18,7 +18,7 @@ From the [PGS Catalog](https://www.pgscatalog.org):
 
 # How are polygenic scores made?
 
-PGS are typically developed using large amounts of data from a biobank, like the [UK Biobank](https://www.ukbiobank.ac.uk). A biobank is a large medical repository, containing linked genetic and health information. Using a combination of genetic data and health information about disease outcomes, it's possible for researchers to identify genetic variants that contribute to disease risk. 
+PGS are typically developed using large amounts of data from a biobank, like the [UK Biobank](https://www.ukbiobank.ac.uk). A biobank is a large medical repository, containing linked genetic and health information. Using a combination of genetic data and health information about disease outcomes, it's possible for researchers to identify genetic variants that contribute to disease risk.
 
 Making new polygenic scores is a complicated data science process that involves tuning hyperparameters and validating how well scores generalise on new data across different ancestry groups. Validated scores are often published in the [PGS Catalog](https://www.pgscatalog.org) for people to reuse.
 
@@ -32,14 +32,13 @@ After a PGS is made the scoring file (a list of variants and effect weights) can
 
 If you'd like to develop a new genetic score and you're not sure which method to use, the benchmarks we've published here could be helpful for you.
 
-You won't find this website useful if you're browsing the PGS Catalog and are trying to understand which scoring file is best to use with your genetic data for particular phenotype. **We only assess and compare methods that can develop new scores**. 
+You won't find this website useful if you're browsing the PGS Catalog and are trying to understand which scoring file is best to use with your genetic data for particular phenotype. **We only assess and compare methods that can develop new scores**.
 
 ## What work did you do?
 
-* We evaluated scores from seven methods in five biobanks across 16 endpoints, [building on the work done by GenoPred](https://opain.github.io/GenoPred/)
-* We conducted meta-analyses to quantify the effects of method choice, hyperparameter tuning, method ensembling and target biobank on PGS performance
-* We published interactive visualisations here to summarise and explain the work described above
-
+-   We evaluated scores from seven methods in five biobanks across 16 endpoints, [building on the work done by GenoPred](https://opain.github.io/GenoPred/)
+-   We conducted meta-analyses to quantify the effects of method choice, hyperparameter tuning, method ensembling and target biobank on PGS performance
+-   We published interactive visualisations here to summarise and explain the work described above
 
 ## Who made this website?
 
@@ -51,8 +50,8 @@ The Genetic Data Platform team at [EMBL-EBI](https://www.ebi.ac.uk/) built this 
 
 The data and website code are open source and permissively licensed:
 
-* The data are published in an [R data package](https://github.com/intervene-EU-H2020/pgsCompaR). Have fun! 
-* The website is [built with Quarto, R, and Observable JS](https://github.com/intervene-EU-H2020/pgs-method-compare)
+-   The data are published in an [R data package](https://github.com/intervene-EU-H2020/pgsCompaR). Have fun!
+-   The website is [built with Quarto, R, and Observable JS](https://github.com/intervene-EU-H2020/pgs-method-compare)
 
 ## How do I get help?
 
