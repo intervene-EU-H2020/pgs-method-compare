@@ -1,0 +1,21 @@
+---
+title: "Tutorials"
+format: 
+  html:
+    doi: "" 
+listing:
+  - id: synthetic-listing
+    contents: "tutorials/synthetic.qmd"
+    type: table
+    table-hover: true
+    fields: [title, author, date]
+    sort-ui: false
+    filter-ui: false
+    sort:
+        - "title asc"
+---
+
+## Working with human genetic variation data 
+
+::: {#synthetic-listing}
+:::

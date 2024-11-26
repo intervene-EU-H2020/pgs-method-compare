@@ -1,0 +1,181 @@
+---
+title: "Synthetic data for human genomics"
+author: "Benjamin Wingfield"
+date: 2024-11-14
+format: 
+  html:
+    doi: "" 
+    other-links:
+      - text: HAPNEST paper
+        href: https://doi.org/10.1093/bioinformatics/btad535
+      - text: HAPNEST synthetic dataset
+        href: https://www.ebi.ac.uk/biostudies/studies/S-BSST936
+    code-links:
+      - text: HAPNEST software
+        icon: file-code
+        href: https://github.com/intervene-EU-H2020/synthetic_data/
+---
+
+## Why are synthetic genomes useful?
+
+Human genetic data is extremely sensitive, and is special category data under the General Data Protection Regulation (GDPR). Human genomes are available from projects like:
+
+-   [1000 Genomes Project](https://www.internationalgenome.org/)
+
+-   [Human Genome Diversity Project](https://www.internationalgenome.org/data-portal/data-collection/hgdp)
+
+-   [Personal Genome Project](https://www.personalgenomes.org.uk/)
+
+However, this data is small (low thousands of individuals) and often lacks linked trait information for privacy and ethical reasons.
+
+When people develop polygenic scores (PGS), they need data from hundreds of thousands of individuals with linked healthcare records. This type of data, available from places like [UK Biobank](https://www.ukbiobank.ac.uk/) or [FinnGen](https://www.finngen.fi/en), is not publicly available. It can only be accessed by vetted researchers that have made a research plan and submitted a formal application to the relevant authority.
+
+Realistic synthetic genomes can be useful for people looking to get started developing data science models or methods that use human genetic variation.
+
+<details>
+
+<summary>What is a genetic variant?</summary>
+
+EMBL-EBI host a [free online training course describing the basics of human genetic variation](https://www.ebi.ac.uk/training/online/courses/human-genetic-variation-introduction/). 
+
+</details>
+
+## Synthetic human genotype and phenotype data from HAPNEST
+
+[HAPNEST is a program](https://github.com/intervene-EU-H2020/synthetic_data/) for simulating large-scale, diverse, and realistic datasets for genotypes and phenotypes. A manuscript describing HAPNEST in detail is available at:
+
+> Sophie Wharrie, Zhiyu Yang, Vishnu Raj, Remo Monti, Rahul
+> Gupta, Ying Wang, Alicia Martin, Luke J O’Connor, Samuel Kaski, Pekka
+> Marttinen, Pier Francesco Palamara, Christoph Lippert, Andrea Ganna,
+> HAPNEST: efficient, large-scale generation and evaluation of synthetic
+> datasets for genotypes and phenotypes, *Bioinformatics*, Volume 39, Issue 9, September 2023, btad535, <https://doi.org/10.1093/bioinformatics/btad535>
+
+The creators of HAPNEST made a [large synthetic dataset freely available for others to reuse and experiment with](#how-can-i-access-the-synthetic-data).
+
+## How can I access the synthetic data?
+
+The HAPNEST synthetic data is available from [BioStudies (accession: S-BSST936)](https://www.ebi.ac.uk/biostudies/studies/S-BSST936).
+
+
+| Dataset | Genetic variants | Individuals | Genetic ancestry groups | Phenotypes | [Genome build](https://gatk.broadinstitute.org/hc/en-us/articles/360035890951-Human-genome-reference-builds-GRCh38-or-hg38-b37-hg19) |
+|---------|------------------|-------------|-------------------------|------------|--------------|
+| Large   | 6,800,000        | 1,008,000   | 6                       | 9          | GRCh38       |
+| Small   | 6,800,000        | 600         | 6                       | 9          | GRCh38       |
+
+: Synthetic dataset summary
+
+The HAPNEST data includes 6.8 million genetic variants and 9 continuous phenotypic traits. Individuals in the dataset cover 6 genetic ancestry groups (AFR, AMR, CSA, EAS, EUR, MID). The creators of the dataset defined genetic ancestry groups using super-population labels from the largest open access globally representative reference panels: [1000 Genomes (1000G) and Human Genome Diversity Project (HGDP)](https://gnomad.broadinstitute.org/downloads#v3-hgdp-1kg). The full dataset including 1,008,000 individuals is several terabytes, so a smaller dataset including 600 individuals is available for testing. Data from BioStudies can be browsed and downloaded using [a web browser](https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/936/S-BSST936/Files/) but better alternatives exist for the largest files.
+
+<details>
+
+<summary>How can I download very large files from BioStudies?</summary>
+
+BioStudies [offer multiple ways to download lots of data](https://www.ebi.ac.uk/biostudies/help#download), including:
+
+-   Globus
+
+-   Aspera
+
+-   FTP
+
+-   HTTPS using CLI tools like `wget` or `curl`
+
+</details>
+
+### Are there restrictions on data use?
+
+The data are licensed [under CC0](https://creativecommons.org/public-domain/cc0/). There are no restrictions on data use or redistribution. If you use the synthetic data in academic work, it's polite to cite the original publication. 
+
+## What are PLINK 1 (bed / bim/ fam) files?
+
+The synthetic dataset are in PLINK 1 binary format. [PLINK](https://www.cog-genomics.org/plink/2.0/) is a whole genome association analysis toolset - the "swiss army knife of human genomics". A PLINK bfile is composed of three files:
+
+* A [binary biallelic genotype table (`.bed`)](https://www.cog-genomics.org/plink/1.9/formats#bed)
+* An [extended MAP file, which contains variant information (`.bim`)](https://www.cog-genomics.org/plink/1.9/formats#bim)
+* A [sample information file, which contains phenotypes / traits (`.fam`)](https://www.cog-genomics.org/plink/1.9/formats#fam)
+
+::: {.callout-note}
+The PLINK 1 format can only represent hard-called biallelic variants. Real human genetic variation can be much more complex than this, but it's a helpful abstraction to start with.
+
+If you want to learn more, [the PLINK 2 file format is capable of representing more complex types of genetic variation](https://doi.org/10.1186/s13742-015-0047-8).
+:::
+
+::: {.callout-warning}
+* PLINK1 format doesn't understand the concept of reference and alternate alleles, only A1/A2 (minor/major) alleles
+* This means that alleles will sometimes swap if the reference allele is less common than the alternate allele
+* [If preserving allele order is important to you, remember to set `--ref_allele`](https://www.cog-genomics.org/plink/2.0/data#ref_allele) when using PLINK
+:::
+
+
+### Reading and writing PLINK data programmatically
+
+Many excellent software packages are able to read PLINK 1 data using your favourite programming language, in no particular order:
+
+* [`pyplink`](https://pypi.org/project/pyplink/)
+* [`bed-reader`](https://pypi.org/project/bed-reader/)
+* [`genio`](https://cran.r-project.org/web/packages/genio/index.html)
+
+## Partioning data (train / test split)
+
+In many data science tasks it's common to split data to assess how well models [can generalise to new data](https://stackoverflow.com/a/13623707).  
+
+Here's a simple approach to splitting plink data:
+
+```
+$ wc -l < synthetic_small_v1_chr-1.fam
+600
+```
+
+Each `fam` file in the synthetic data contains the same information: a list of sample IDs. Assuming a standard 80/20 train/test split, grab 480 sample IDs from a fam file:
+
+```
+$ export N_TRAINING_SAMPLES=480
+$ shuf --random-source <(yes 42) synthetic_small_v1_chr-1.fam | \
+  head -n $N_TRAINING_SAMPLES | \
+  cut -f 1,2 -d ' ' > train.txt
+```
+
+::: {.callout-warning}
+In different datasets (e.g. full HAPNEST) you will need to calculate the number of samples you want in the training set and adjust the above command
+:::
+
+::: {.callout-tip}
+* `--random-source <(yes 42)` [is a seed](https://stackoverflow.com/a/69982328)
+* A seed helps to produce the same random order each time the command is run
+* Seeds are an import part of reproducible data science
+:::
+
+Now split the data into train and test splits:
+
+```
+$ plink2 --bfile synthetic_small_v1_chr-1 \
+  --keep train.txt \
+  --make-bfile \
+  --out train
+$ plink2 --bfile synthetic_small_v1_chr-1 \
+  --remove train.txt \
+  --make-bfile \
+  --out test
+```
+
+Six new files should be created:
+
+* `train.bed`, `train.bim`, and `train.fam`
+* `test.bed`, `test.bim`, and `test.fam`
+
+Double check they have the correct number of samples:
+
+```
+$ wc -l < train.fam
+480
+$ wc -l < test.fam
+120
+```
+
+::: {.callout-tip}
+You could also use data science libraries such as [`sklearn`](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html) or [`caret`](https://topepo.github.io/caret/data-splitting.html) to do this for you combined with a library that can read PLINK 1 data, like `pyplink` or `genio`
+:::
+
+## Next steps
+
+[Section 6 of the HAPNEST paper](https://doi.org/10.1093/bioinformatics/btad535) describes how different polygenic scoring methods were applied to the synthetic data. 
