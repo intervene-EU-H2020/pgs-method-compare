@@ -133,7 +133,7 @@ filtered_pairwise = aq.fromJSON(pv_mrg)
     relative_rank: d => op.row_number(),
     relative_beta_diff: d => aq.roundfloat(d.relative_beta_diff, 3),
     relative_ci_low_diff: d => aq.roundfloat(d.relative_ci_low_diff, 3),
-    relative_ci_high_diff: d => aq.roundfloat(d.relative_ci_low_diff, 3)
+    relative_ci_high_diff: d => aq.roundfloat(d.relative_ci_high_diff, 3)
   })
   .derive({
     relative_beta_with_ci: d => `${d.relative_beta_diff} (${d.relative_ci_low_diff}-${d.relative_ci_high_diff})`
