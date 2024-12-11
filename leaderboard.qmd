@@ -18,14 +18,20 @@ Instead of comparing biobanks separately, we can pool information across all of 
 
 ## Explore the data
 
+## Pairwise comparison leaderboard
+
 ```{r setup, echo=FALSE}
 library(pgsCompaR)
 # load data from R data package
 data(pv_mrg)
+data(meta_res)
+endpoints <- unique(meta_res$phenotype)
 pairwise_endpoints <- unique(pv_mrg$phenotype)
 # make data ready for observable JS
 ojs_define(pv_mrg)
 ojs_define(pairwise_endpoints)
+ojs_define(meta_res)
+ojs_define(endpoints)
 ```
 
 ```{ojs}
@@ -60,9 +66,9 @@ viewof use_relative = Inputs.radio(["relative", "raw"],
 
 table_columns = {
   if (use_relative === "relative") {
-    return ["relative_rank", "method_x", "method_type_x", "method_y", "ancestry", "relative_beta_with_ci"];
+    return ["relative_rank", "method_x", "method_y", "ancestry", "relative_beta_with_ci"];
   } else {
-    return ["rank", "method_x", "method_type_x", "method_y", "ancestry", "beta_with_ci"];
+    return ["rank", "method_x", "method_y", "ancestry", "beta_with_ci"];
   }
 }
 
@@ -126,6 +132,7 @@ filtered_pairwise = aq.fromJSON(pv_mrg)
     relative_ci_low_diff: d => d.ci_low_diff / d.beta_y })
   .params({endpoint: pairwise_endpoint, method_y: method_y, method_type: method_type})
   .filter((d, $) => op.includes($.method_type, d.method_type_y ) &&
+    op.includes($.method_type, d.method_type_x ) &&
     op.includes($.method_y, d.method_y) &&
     op.includes($.endpoint, d.phenotype ))
   .orderby(aq.desc('relative_beta_diff'))
@@ -149,4 +156,68 @@ filtered_pairwise = aq.fromJSON(pv_mrg)
     beta_with_ci: d => `${d.beta_diff} (${d.ci_low_diff}-${d.ci_high_diff})`
 })  
 
+```
+
+## Absolute effect size leaderboard
+
+```{ojs}
+//| echo: false
+viewof methods = Inputs.checkbox(
+  ["dbslmm", "sbayesr", "lassosum", "prscs", "ldpred2", "megaprs", "pt.clump", "UKBB.EnsPRS"],
+  { value: ["dbslmm", "sbayesr", "lassosum", "prscs", "ldpred2", "megaprs", "pt.clump", "UKBB.EnsPRS"],
+    label: "Method:",
+    sort: true, 
+    unique: true }
+)
+
+viewof ancestries = Inputs.checkbox(
+  ["EUR", "SAS"],
+  { label: "Ancestry",
+    value: ["EUR", "SAS"],
+    sort: true,
+    unique: true
+  })
+
+viewof endpoint = Inputs.select(endpoints, {value: "T2D", label: "Endpoint:"})
+```
+
+```{ojs}
+//| echo: false
+Inputs.table(filtered, {
+  columns: ["rank", "method", "tuning_type", "ancestry", "beta_with_ci"],
+  header: {
+    rank: "Rank",
+    method: "Development method",
+    tuning_type: "Tuning type",
+    ancestry: "Genetic ancestry",
+    beta_with_ci: "Beta (95% CI)" 
+  },
+  sort: "rank",
+  rows: 20,
+  width: "auto",
+  height: "auto",
+  multiple: false,
+  select: false
+})
+```
+
+
+```{ojs}
+//| echo: false
+
+filtered = aq.fromJSON(meta_res) 
+  .params({methods: methods, ancestries: ancestries, endpoint: endpoint })
+  .filter((d, $) => op.includes($.ancestries, d.ancestry) && 
+    op.includes($.methods, d.method) &&
+    op.includes($.endpoint, d.phenotype))
+  .orderby(aq.desc('beta'))
+  .derive({
+    rank: d => op.row_number(),
+    beta: d => aq.roundfloat(d.beta, 3),
+    ci_low: d => aq.roundfloat(d.ci_low, 3),
+    ci_high: d => aq.roundfloat(d.ci_high, 3)
+  })
+  .derive({
+    beta_with_ci: d => `${d.beta} (${d.ci_low}-${d.ci_high})`
+  })
 ```

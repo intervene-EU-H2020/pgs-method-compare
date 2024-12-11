@@ -18,14 +18,14 @@ website:
     left:
       - href: index.qmd
         text: Home
+      - href: leaderboard.qmd
+        text: Leaderboard      
       - href: effect-sizes.qmd
         text: Effect sizes
       - href: pairwise.qmd
         text: Pairwise comparison
       - href: meta.qmd
         text: Meta analysis
-      - href: leaderboard.qmd
-        text: Leaderboard        
       - href: tutorials.qmd
         text: Tutorials
       - href: glossary.qmd
