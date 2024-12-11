@@ -1,0 +1,152 @@
+---
+title: "Methods leaderboard"
+---
+
+<details>
+
+<summary>Meta analysis explanation</summary>
+
+<p>We meta-analysed PGS effect sizes β using meta-analytic mixed models. The absolute performance of PGS varied considerably between biobanks for some phenotypes. For this reason, confidence intervals may appear larger than they do for individual biobanks.</p>
+
+<p>By looking at differences between PGS effect sizes (βₓ - βₓ), we can partially adjust for the variability between biobanks. As for the the results in the [pairwise comparisons](pairwise.qmd), the confidence intervals of these differences are adjusted for the correlation between PGS. We provide the option to divide by the effect size of the chosen baseline method ((βᵧ - βₓ) / βᵧ) to display "relative" performance.</p>
+
+<p>While we sometimes cannot confidently estimate the absolute performance (β) of methods across biobanks in the meta-analytical mixed model, we generally can make more accurate claims about "raw" differences in performance (βᵧ - βₓ).</p>
+
+</details>
+
+Instead of comparing biobanks separately, we can pool information across all of the biobanks and perform a [meta-analysis](meta.qmd), which improves the fidelity of our [effect size](effect-sizes.qmd) and [pairwise comparison](pairwise.qmd) benchmarks.
+
+## Explore the data
+
+```{r setup, echo=FALSE}
+library(pgsCompaR)
+# load data from R data package
+data(pv_mrg)
+pairwise_endpoints <- unique(pv_mrg$phenotype)
+# make data ready for observable JS
+ojs_define(pv_mrg)
+ojs_define(pairwise_endpoints)
+```
+
+```{ojs}
+//| echo: false
+
+viewof method_y = Inputs.radio(
+  ["dbslmm", "sbayesr", "lassosum", "prscs", "ldpred2", "megaprs", "pt.clump", "UKBB.EnsPRS"],
+  { value: ["dbslmm", "sbayesr", "lassosum", "prscs", "ldpred2", "megaprs", "pt.clump", "UKBB.EnsPRS"],
+  value: "pt.clump",
+  label: "Baseline method:",
+  sort: true, 
+  unique: true,
+  disabled: disable_method_type[method_type]}
+)
+
+// some methods only have one method type, so disable the radio button
+disable_method_type = ({ "CV": ["prscs", "sbayesr", "dbslmm"], "auto": ["UKBB.EnsPRS"]})
+
+viewof method_type = Inputs.radio(["CV", "auto"],
+{ label: "Tuning method:",
+  value: "auto"})
+  
+viewof pairwise_endpoint = Inputs.select(pairwise_endpoints, {value: "T2D", label: "Endpoint:"})
+
+viewof use_relative = Inputs.radio(["relative", "raw"],
+{ label: "Difference metric",
+  value: "relative"})
+```
+
+```{ojs}
+//| echo: false
+
+table_columns = {
+  if (use_relative === "relative") {
+    return ["relative_rank", "method_x", "method_type_x", "method_y", "ancestry", "relative_beta_with_ci"];
+  } else {
+    return ["rank", "method_x", "method_type_x", "method_y", "ancestry", "beta_with_ci"];
+  }
+}
+
+table_header = {
+  if (use_relative === "relative") {
+    return {
+      relative_rank: "Rank",
+      method_y: "Baseline method (βᵧ)",
+      method_x: "Compared method (βₓ)",
+      method_type_x: "Tuning type",
+      ancestry: "Genetic ancestry",
+      relative_beta_with_ci: "Relative difference"
+    };
+  } else {
+    return {
+      rank: "Rank",
+      method_y: "Baseline method (βᵧ)",
+      method_x: "Compared method (βₓ)",
+      method_type_x: "Tuning type",
+      ancestry: "Genetic ancestry",
+      beta_with_ci: "Raw difference"
+    };
+  }
+}
+
+sort_key = {
+  if (use_relative === "relative") {
+    return "relative_rank";
+  } else {
+    return "rank"; 
+  }
+}
+
+Inputs.table(filtered_pairwise, {
+  columns: table_columns,
+  header: table_header,
+  sort: sort_key,
+  rows: 20,
+  width: "auto",
+  height: "auto",
+  multiple: false,
+  select: false,
+  layout: "fixed"  
+})
+
+```
+
+
+```{ojs}
+//| echo: false
+//| message: false
+
+import { aq, op } from '@uwdata/arquero'
+
+// hides "undefined" return of aq.addFunction
+_ = aq.addFunction('roundfloat', (x, y) => Number(x).toFixed(y));
+
+filtered_pairwise = aq.fromJSON(pv_mrg)
+  .derive({ relative_beta_diff: d => d.beta_diff / d.beta_y,
+    relative_ci_high_diff: d => d.ci_high_diff / d.beta_y,
+    relative_ci_low_diff: d => d.ci_low_diff / d.beta_y })
+  .params({endpoint: pairwise_endpoint, method_y: method_y, method_type: method_type})
+  .filter((d, $) => op.includes($.method_type, d.method_type_y ) &&
+    op.includes($.method_y, d.method_y) &&
+    op.includes($.endpoint, d.phenotype ))
+  .orderby(aq.desc('relative_beta_diff'))
+  .derive({
+    relative_rank: d => op.row_number(),
+    relative_beta_diff: d => aq.roundfloat(d.relative_beta_diff, 3),
+    relative_ci_low_diff: d => aq.roundfloat(d.relative_ci_low_diff, 3),
+    relative_ci_high_diff: d => aq.roundfloat(d.relative_ci_low_diff, 3)
+  })
+  .derive({
+    relative_beta_with_ci: d => `${d.relative_beta_diff} (${d.relative_ci_low_diff}-${d.relative_ci_high_diff})`
+})
+  .orderby(aq.desc('beta_diff'))
+  .derive({
+    rank: d => op.row_number(),
+    beta_diff: d => aq.roundfloat(d.beta_diff, 3),
+    ci_low_diff: d => aq.roundfloat(d.ci_low_diff, 3),
+    ci_high_diff: d => aq.roundfloat(d.ci_high_diff, 3)
+  })
+  .derive({
+    beta_with_ci: d => `${d.beta_diff} (${d.ci_low_diff}-${d.ci_high_diff})`
+})  
+
+```

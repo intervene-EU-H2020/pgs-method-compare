@@ -50,7 +50,8 @@ The Genetic Data Platform team at [EMBL-EBI](https://www.ebi.ac.uk/) built this 
 
 The data and website code are open source and permissively licensed:
 
--   The data are published in an [R data package](https://github.com/intervene-EU-H2020/pgsCompaR). Have fun!
+-   The performance metrics are published in the [PGS Catalog](https://www.pgscatalog.org/publication/PGP000517/)
+-   The processed and meta-analysed metrics are published in an [R data package](https://github.com/intervene-EU-H2020/pgsCompaR). Have fun!
 -   The website is [built with Quarto, R, and Observable JS](https://github.com/intervene-EU-H2020/pgs-method-compare)
 
 ## How do I get help?

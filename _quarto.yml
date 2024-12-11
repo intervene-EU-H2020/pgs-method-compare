@@ -2,7 +2,7 @@ project:
   type: website
 
 website:
-  title: "PGS method benchmarks"
+  title: "PGS method competition"
   site-url: 'https://methodscomparison.intervenegeneticscores.org/'
   site-path: '/'
   navbar:
@@ -24,6 +24,8 @@ website:
         text: Pairwise comparison
       - href: meta.qmd
         text: Meta analysis
+      - href: leaderboard.qmd
+        text: Leaderboard        
       - href: tutorials.qmd
         text: Tutorials
       - href: glossary.qmd
