@@ -8,17 +8,17 @@ title: "Meta analysis across biobanks"
 
 <p>We meta-analysed PGS effect sizes β using meta-analytic mixed models. The absolute performance of PGS varied considerably between biobanks for some phenotypes. For this reason, confidence intervals may appear larger than they do for individual biobanks.</p>
 
-<p>By looking at differences between PGS effect sizes (βₓ - βₓ), we can partially adjust for the variability between biobanks. As for the the results in the [pairwise comparisons](pairwise.qmd), the confidence intervals of these differences are adjusted for the correlation between PGS. We provide the option to divide by the effect size of the chosen baseline method ((βₓ - βₓ) / βᵧ) to display "relative" performance.</p>
+<p>By looking at differences between PGS effect sizes (βₓ - βₓ), we can partially adjust for the variability between biobanks. As for the the results in the [relative effect size comparisons](relative.qmd), the confidence intervals of these differences are adjusted for the correlation between PGS. We provide the option to divide by the effect size of the chosen baseline method ((βₓ - βₓ) / βᵧ) to display "relative" performance.</p>
 
 <p>While we sometimes cannot confidently estimate the absolute performance (β) of methods across biobanks in the meta-analytical mixed model, we generally can make more accurate claims about "raw" differences in performance (βₓ - βₓ).</p>
 
 </details>
 
-Instead of comparing biobanks separately, we can pool information across all of the biobanks and perform a meta-analysis, which improves the fidelity of our [effect size](effect-sizes.qmd) and [pairwise comparison](pairwise.qmd) benchmarks.
+Instead of comparing biobanks separately, we can pool information across all of the biobanks and perform a meta-analysis, which improves the fidelity of our [absolute effect size](effect-sizes.qmd) and [relative effect size](relative.qmd) benchmarks.
 
 ## Explore the data
 
-### Effect sizes
+### Absolute effect sizes
 
 This figure corresponds to Figure 4 in the published article.
 
@@ -130,7 +130,7 @@ filtered = aq.fromJSON(meta_res)
   .filter((d, $) => op.includes($.best_method, d.best_method ))
 ```
 
-### Pairwise method comparison
+### Relative effect size 
 
 This figure corresponds to Figure 3A and Table 3 in the accompanying paper.
 

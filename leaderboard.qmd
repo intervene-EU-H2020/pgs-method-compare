@@ -1,24 +1,28 @@
 ---
-title: "Methods leaderboard"
+title: "Leaderboards"
 ---
+
+Instead of comparing biobanks separately, we can pool information across all of the biobanks and perform a [meta-analysis](meta.qmd), which improves the fidelity of our [absolute effect size](effect-sizes.qmd) and [relative effect size](relative.qmd) benchmarks. These leaderboards represent the results from the meta-analysis of relative and absolute effect size. 
 
 <details>
 
-<summary>Meta analysis explanation</summary>
+<summary>More details</summary>
 
-<p>We meta-analysed PGS effect sizes β using meta-analytic mixed models. The absolute performance of PGS varied considerably between biobanks for some phenotypes. For this reason, confidence intervals may appear larger than they do for individual biobanks.</p>
+<h2>Performance</h2>
 
-<p>By looking at differences between PGS effect sizes (βₓ - βₓ), we can partially adjust for the variability between biobanks. As for the the results in the [pairwise comparisons](pairwise.qmd), the confidence intervals of these differences are adjusted for the correlation between PGS. We provide the option to divide by the effect size of the chosen baseline method ((βᵧ - βₓ) / βᵧ) to display "relative" performance.</p>
+<p>We meta-analysed PGS effect sizes (β) using meta-analytic mixed models. The absolute performance of PGS varied considerably between biobanks for some phenotypes.</p>
 
-<p>While we sometimes cannot confidently estimate the absolute performance (β) of methods across biobanks in the meta-analytical mixed model, we generally can make more accurate claims about "raw" differences in performance (βᵧ - βₓ).</p>
+<p>By looking at differences between PGS effect sizes (βy - βₓ), we can partially adjust for the variability between biobanks. As for  the results in the relative effect size pairwise comparisons, the confidence intervals of these differences are adjusted for the correlation between PGS. We provide the option to divide by the effect size of the chosen baseline method ((βᵧ - βₓ) / βᵧ) to display “relative” performance.</p>
+
+<p>While we sometimes cannot confidently estimate the absolute performance (β) of methods across biobanks in the meta-analytical mixed model, we generally can make more accurate claims about “raw” differences in performance (βᵧ - βₓ).</p>
+
+<h2>Tuning</h2>
+
+<p>Many methods allow automatically setting suitable parameters without the use of phenotype data (we refer to this generally as automatic tuning). Alternatively, target data can be used to empirically determine hyperparameters on the basis of, for example, cross-validation (CV).</p>
 
 </details>
 
-Instead of comparing biobanks separately, we can pool information across all of the biobanks and perform a [meta-analysis](meta.qmd), which improves the fidelity of our [effect size](effect-sizes.qmd) and [pairwise comparison](pairwise.qmd) benchmarks.
-
-## Explore the data
-
-## Pairwise comparison leaderboard
+## Leaderboard (relative effect size)
 
 ```{r setup, echo=FALSE}
 library(pgsCompaR)
@@ -50,14 +54,14 @@ viewof method_y = Inputs.radio(
 // some methods only have one method type, so disable the radio button
 disable_method_type = ({ "CV": ["prscs", "sbayesr", "dbslmm"], "auto": ["UKBB.EnsPRS"]})
 
-viewof method_type = Inputs.radio(["CV", "auto"],
-{ label: "Tuning method:",
+viewof method_type = Inputs.radio(new Map([["Cross Validation (CV)", "CV"], ["Automatic", "auto"]]),
+  { label: "Baseline tuning:",
   value: "auto"})
   
 viewof pairwise_endpoint = Inputs.select(pairwise_endpoints, {value: "T2D", label: "Endpoint:"})
 
-viewof use_relative = Inputs.radio(["relative", "raw"],
-{ label: "Difference metric",
+viewof use_relative = Inputs.radio(new Map([["Relative ((βᵧ - βₓ) / βᵧ)", "relative"], ["Raw (βᵧ - βₓ)", "raw"]]),
+  { label: "Performance metric",
   value: "relative"})
 ```
 
@@ -66,9 +70,9 @@ viewof use_relative = Inputs.radio(["relative", "raw"],
 
 table_columns = {
   if (use_relative === "relative") {
-    return ["relative_rank", "method_x", "method_y", "ancestry", "relative_beta_with_ci"];
+    return ["relative_rank", "method_y", "method_x", "method_type_x",  "ancestry", "relative_beta_with_ci"];
   } else {
-    return ["rank", "method_x", "method_y", "ancestry", "beta_with_ci"];
+    return ["rank", "method_y", "method_x", "method_type_x", "ancestry", "beta_with_ci"];
   }
 }
 
@@ -76,11 +80,11 @@ table_header = {
   if (use_relative === "relative") {
     return {
       relative_rank: "Rank",
-      method_y: "Baseline method (βᵧ)",
+      method_y: "Baseline (βᵧ)",
       method_x: "Compared method (βₓ)",
-      method_type_x: "Tuning type",
+      method_type_x: "Tuning method",
       ancestry: "Genetic ancestry",
-      relative_beta_with_ci: "Relative difference"
+      relative_beta_with_ci: "Performance (relative)"
     };
   } else {
     return {
@@ -89,7 +93,7 @@ table_header = {
       method_x: "Compared method (βₓ)",
       method_type_x: "Tuning type",
       ancestry: "Genetic ancestry",
-      beta_with_ci: "Raw difference"
+      beta_with_ci: "Performance (raw)"
     };
   }
 }
@@ -132,7 +136,6 @@ filtered_pairwise = aq.fromJSON(pv_mrg)
     relative_ci_low_diff: d => d.ci_low_diff / d.beta_y })
   .params({endpoint: pairwise_endpoint, method_y: method_y, method_type: method_type})
   .filter((d, $) => op.includes($.method_type, d.method_type_y ) &&
-    op.includes($.method_type, d.method_type_x ) &&
     op.includes($.method_y, d.method_y) &&
     op.includes($.endpoint, d.phenotype ))
   .orderby(aq.desc('relative_beta_diff'))
@@ -158,7 +161,10 @@ filtered_pairwise = aq.fromJSON(pv_mrg)
 
 ```
 
-## Absolute effect size leaderboard
+The relative effect size leaderboard uses pruning and thresholding (pt.clump) with automatic tuning as the default baseline method.
+
+
+## Leaderboard (absolute effect size)
 
 ```{ojs}
 //| echo: false

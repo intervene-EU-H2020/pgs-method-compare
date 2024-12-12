@@ -44,6 +44,45 @@ ojs_define(metrics)
 ojs_define(endpoints)
 ```
 
+
+```{ojs}
+//| echo: false
+
+d3 = require('d3')
+
+allResults = {
+  const results = [];
+  let hasMore = true;
+  let url = new URL("https://www.pgscatalog.org/rest/performance/search");
+  url.searchParams.set("pgp_id", "PGP000517");
+
+  while (hasMore) {
+    try {
+      const response = await d3.json(url.toString());
+
+      if (response && response.results) {
+        results.push(...response.results);
+        yield results; 
+
+        if (response.next) {
+          url = new URL(response.next); 
+        } else {
+          hasMore = false;
+        }
+      } else {
+        hasMore = false; 
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      hasMore = false;
+    }
+  }
+}
+
+
+allResults
+```
+
 ```{ojs}
 //| echo: false
 //| panel: sidebar
