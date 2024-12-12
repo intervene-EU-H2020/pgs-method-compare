@@ -8,9 +8,15 @@ This website complements a [published benchmark of polygenic score development m
 
 The analysis is complex, and the aim of the interactive visualisations on this website is to make the benchmark results clearer.
 
+## What work did you do?
+
+- We evaluated scores from seven methods in five biobanks across 16 endpoints, [building on the work done by GenoPred](https://opain.github.io/GenoPred/)
+- We conducted meta-analyses to quantify the effects of method choice, hyperparameter tuning, method ensembling and target biobank on PGS performance
+- We published interactive visualisations here to summarise and explain the work described above
+
 ## What data is shown here? 
 
-You can view the effects sizes of each of the methods in each of the biobanks on the [absolute effect sizes tab](effect-sizes.qmd). To see how methods compare against a baseline method take a look at the [relative effect sizes tab](relative.qmd). Instead of comparing biobanks separately, we can pool information across all of the biobanks and perform a meta-analysis, which improves the fidelity of our absolute and relative effect size benchmarks [(meta analysis tab)](meta.qmd). To get an overview of the top performing methods [check out our leaderboards.](leaderboard.qmd)
+You can view the effects sizes of each of the methods in each of the biobanks on the [absolute effect sizes tab](effect-sizes.qmd). To see how methods compare against a baseline method take a look at the [relative effect sizes tab](relative.qmd). Instead of comparing biobanks separately, we can pool information across all of the biobanks and perform a [meta-analysis](meta.qmd), which improves the fidelity of our absolute and relative effect size benchmarks. To get an overview of the top performing methods [check out our leaderboards.](leaderboard.qmd)
 
 ## Can I add my methods comparison to be visualised here?
 
@@ -43,12 +49,6 @@ After a PGS is made the scoring file (a list of variants and effect weights) can
 If you'd like to develop a new genetic score and you're not sure which method to use, the benchmarks we've published here could be helpful for you.
 
 You won't find this website useful if you're browsing the PGS Catalog and are trying to understand which scoring file is best to use with your genetic data for particular phenotype. **We only assess and compare methods that can develop new scores**.
-
-## What work did you do?
-
--   We evaluated scores from seven methods in five biobanks across 16 endpoints, [building on the work done by GenoPred](https://opain.github.io/GenoPred/)
--   We conducted meta-analyses to quantify the effects of method choice, hyperparameter tuning, method ensembling and target biobank on PGS performance
--   We published interactive visualisations here to summarise and explain the work described above
 
 ## Who made this website?
 

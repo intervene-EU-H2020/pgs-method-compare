@@ -47,6 +47,7 @@ ojs_define(endpoints)
 
 ```{ojs}
 //| echo: false
+//| eval: false
 
 d3 = require('d3')
 
