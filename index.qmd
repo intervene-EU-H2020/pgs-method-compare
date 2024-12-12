@@ -1,4 +1,6 @@
-# What is this website?
+# About the PGS methods competition
+
+## What is this website?
 
 This website complements a [published benchmark of polygenic score development methods across five European biobanks](https://doi.org/10.1101/2023.11.20.23298215):
 
@@ -6,23 +8,37 @@ This website complements a [published benchmark of polygenic score development m
 
 The analysis is complex, and the aim of the interactive visualisations on this website is to make the benchmark results clearer.
 
-::: {.callout-tip title="Get started"}
-Check out a [visualisation of effect sizes](effect-sizes.qmd) or compare [methods directly](pairwise.qmd)
-:::
+## What work did you do?
 
-# What is a polygenic score?
+- We evaluated scores from seven methods in five biobanks across 16 endpoints, [building on the work done by GenoPred](https://opain.github.io/GenoPred/)
+- We conducted meta-analyses to quantify the effects of method choice, hyperparameter tuning, method ensembling and target biobank on PGS performance
+- We published interactive visualisations here to summarise and explain the work described above
+
+## What data is shown here? 
+
+You can view the effects sizes of each of the methods in each of the biobanks on the [absolute effect sizes tab](effect-sizes.qmd). To see how methods compare against a baseline method take a look at the [relative effect sizes tab](relative.qmd). Instead of comparing biobanks separately, we can pool information across all of the biobanks and perform a [meta-analysis](meta.qmd), which improves the fidelity of our absolute and relative effect size benchmarks. To get an overview of the top performing methods [check out our leaderboards.](leaderboard.qmd)
+
+## Can I add my methods comparison to be visualised here?
+
+Yes! If your methods comparison meets some criteria for how it is conducted and the data format, it can be visualised here. 
+
+The comparison needs to be conducted according to a reference standardised framework (see [guidance](tutorials/guidance.qmd)) and the results (scoring files, performance metrics and meta-data) to be submitted to the [PGS Catalog](https://www.pgscatalog.org/about/#eligibility).  Please open a GitHub issue to [discuss including your data](https://github.com/intervene-EU-H2020/pgs-method-compare/issues/new?assignees=&labels=&projects=&template=add-benchmark-data.md&title=).
+
+# About polygenic scores 
+
+## What is a polygenic score?
 
 From the [PGS Catalog](https://www.pgscatalog.org):
 
 > "A polygenic score (PGS) aggregates the effects of many genetic variants into a single number which predicts genetic predisposition for a phenotype. PGS are typically composed of hundreds-to-millions of genetic variants (usually SNPs) which are combined using a weighted sum of allele dosages multiplied by their corresponding effect sizes, as estimated from a relevant genome-wide association study (GWAS)."
 
-# How are polygenic scores made?
+## How are polygenic scores made?
 
 PGS are typically developed using large amounts of data from a biobank, like the [UK Biobank](https://www.ukbiobank.ac.uk). A biobank is a large medical repository, containing linked genetic and health information. Using a combination of genetic data and health information about disease outcomes, it's possible for researchers to identify genetic variants that contribute to disease risk.
 
 Making new polygenic scores is a complicated data science process that involves tuning hyperparameters and validating how well scores generalise on new data across different ancestry groups. Validated scores are often published in the [PGS Catalog](https://www.pgscatalog.org) for people to reuse.
 
-# How do people use polygenic scores?
+## How do people use polygenic scores?
 
 After a PGS is made the scoring file (a list of variants and effect weights) can be uploaded to the PGS Catalog for people to reuse. If you have some human genetic data it's possible to use published scoring files to predict genetic predisposition for traits. Reusing published scores is much simpler than making new PGS, especially if you use the [PGS Catalog Calculator](https://github.com/PGScatalog/pgsc_calc) 👀
 
@@ -34,12 +50,6 @@ If you'd like to develop a new genetic score and you're not sure which method to
 
 You won't find this website useful if you're browsing the PGS Catalog and are trying to understand which scoring file is best to use with your genetic data for particular phenotype. **We only assess and compare methods that can develop new scores**.
 
-## What work did you do?
-
--   We evaluated scores from seven methods in five biobanks across 16 endpoints, [building on the work done by GenoPred](https://opain.github.io/GenoPred/)
--   We conducted meta-analyses to quantify the effects of method choice, hyperparameter tuning, method ensembling and target biobank on PGS performance
--   We published interactive visualisations here to summarise and explain the work described above
-
 ## Who made this website?
 
 [INTERVENE](https://www.interveneproject.eu/who-we-are) is an international and interdisciplinary consortium that seeks to develop and implement next-generation tools for AI-facilitated personalised medicine.
@@ -50,9 +60,10 @@ The Genetic Data Platform team at [EMBL-EBI](https://www.ebi.ac.uk/) built this 
 
 The data and website code are open source and permissively licensed:
 
--   The data are published in an [R data package](https://github.com/intervene-EU-H2020/pgsCompaR). Have fun!
+-   The performance metrics are published in the [PGS Catalog](https://www.pgscatalog.org/publication/PGP000517/)
+-   The processed and meta-analysed metrics are published in an [R data package](https://github.com/intervene-EU-H2020/pgsCompaR). Have fun!
 -   The website is [built with Quarto, R, and Observable JS](https://github.com/intervene-EU-H2020/pgs-method-compare)
 
 ## How do I get help?
 
-If something isn't clear or you have questions, please feel free [to open an issue on Github.](https://github.com/intervene-EU-H2020/pgs-method-compare/issues/new)
+If something isn't clear or you have questions, please feel free [to open an issue on Github.](https://github.com/intervene-EU-H2020/pgs-method-compare/issues/new/choose)

@@ -1,5 +1,5 @@
 ---
-title: "Pairwise method comparison"
+title: "Relative method comparison"
 ---
 
 <details>
@@ -14,12 +14,13 @@ title: "Pairwise method comparison"
 
 </details>
 
-This interactive plot corresponds to Figure 1C in the published article.
+This interactive plot corresponds to Figure 2C in the published article.
 
 ```{r setup, echo=FALSE}
 library(pgsCompaR)
 data(dst) # load data from R package
-endpoints <- unique(metrics$phenotype)
+dst <- dst[, c("method_x", "bbid", "ancestry", "method_x", "method_type_x", "beta_diff", "beta_y", "ci_low_diff", "ci_high_diff", "phenotype", "method_y", "method_type_y")]
+endpoints <- unique(dst$phenotype)
 # pass data to observable JS
 ojs_define(dst)
 ojs_define(endpoints)
@@ -177,7 +178,6 @@ disable_method_type = ({ "CV": ["prscs", "sbayesr", "dbslmm"], "auto": ["UKBB.En
 import { aq, op } from '@uwdata/arquero'
 
 filtered = aq.fromJSON(dst)
-  .select("method_x", "bbid", "ancestry", "method_x", "method_type_x", "beta_diff", "beta_y", "ci_low_diff", "ci_high_diff", "phenotype", "method_y", "method_type_y")
   .derive({ relative_beta_diff: d => d.beta_diff / d.beta_y,
     relative_ci_high_diff: d => d.ci_high_diff / d.beta_y,
     relative_ci_low_diff: d => d.ci_low_diff / d.beta_y })

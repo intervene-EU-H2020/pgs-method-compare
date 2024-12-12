@@ -1,0 +1,22 @@
+---
+title: "Reference standardised framework for PGS methods comparison"
+author: "Aoife McMahon"
+date: 2024-12-12
+bibliography: references.bib
+format: 
+  html:
+    doi: "" 
+    other-links:
+      - text: Discuss submitting your data
+        href: https://github.com/intervene-EU-H2020/pgs-method-compare/issues/new?assignees=&labels=&projects=&template=add-benchmark-data.md&title=
+---
+
+If you want to compare PGS methods we recommend following a reference standardised approach to ensure the comparison is fair.  In order to truly assess which PGS development method is superior the raw ingredients and how the scores are assessed should be identical. In the context of PGS the raw ingredients are the source genetic variants associated with the phenotype in question on which the method is applied (usually population level summary statistics from a genome wide association study (GWAS)).  In terms of assessment, all the target populations should be genotyped to a similar degree and the phenotypes should be similarly defined. Typically the input variants from the GWAS and the loci in the target genomes are restricted to SNPs that are commonly present in genotyping data (after imputation) for example variation within the HapMap3 reference data. This is termed a reference-standardised approach [@pain2021evaluation]
+
+Publicly available pipelines such as [`GenoPred`](https://opain.github.io/GenoPred/pipeline_overview.html) and [`prspipe`](https://github.com/intervene-EU-H2020/prspipe) implement reference standardised approaches [@pain2024genopred;@monti2024evaluation].
+
+If you wish to compare the same traits as shown here the full list of traits and GWAS summary statistics used from the GWAS Catalog are shown in Table 1 of @monti2024evaluation. 
+
+The list of HapMap3-1KG variants used to [construct the polygenic scores is available here](https://github.com/intervene-EU-H2020/prspipe/blob/main/resources/1kg/1KGPhase3_hm3_hg19_hg38_mapping_cached.tsv.gz).
+
+We encourage that the results of your evaluation (scoring files, performance metrics and metadata) are submitted to the [PGS Catalog](https://www.pgscatalog.org/about/#eligibility).

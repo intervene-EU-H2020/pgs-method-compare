@@ -3,27 +3,36 @@ title: "Polygenic risk score effect sizes"
 ---
 
 <details>
-  <summary>Metrics explanation</summary>
-  
-  <dl>
-    <dt>AUC</dt>
-    <dd>Area Under Receiver Operating Characteristic</dd>
-    <dd>This metric cares only about relative ordering of observations, and is available only for binary traits.</dd>
 
-    <dt>β</dt>
-    <dd>Standardized regression coefficients. For continuous traits, this is the change in the trait (in standard deviations) per standard deviation of the PGS. For binary traits, this is the change in the log-odds per standard deviation of the PGS.</dd>
-    <dd>This is the metric that was used for meta-analyses.</dd>
+<summary>Metrics explanation</summary>
 
-    <dt>Odds Ratio (OR)</dt>
-    <dd>This is the change in the odds ratio per standard deviation of the PGS (exp(β))</dd>
-  
-    <dt>R²</dt>
-    <dd>This is the variance explained by the PGS on the observed scale for continuous traits, or on the liability scale for binary traits</dd>
-  </dl>
+<dl>
+
+<dt>AUC</dt>
+
+<dd>Area Under Receiver Operating Characteristic</dd>
+
+<dd>This metric cares only about relative ordering of observations, and is available only for binary traits.</dd>
+
+<dt>β</dt>
+
+<dd>Standardized regression coefficients. For continuous traits, this is the change in the trait (in standard deviations) per standard deviation of the PGS. For binary traits, this is the change in the log-odds per standard deviation of the PGS.</dd>
+
+<dd>This is the metric that was used for meta-analyses.</dd>
+
+<dt>Odds Ratio (OR)</dt>
+
+<dd>This is the change in the odds ratio per standard deviation of the PGS (exp(β))</dd>
+
+<dt>R²</dt>
+
+<dd>This is the variance explained by the PGS on the observed scale for continuous traits, or on the liability scale for binary traits</dd>
+
+</dl>
+
 </details>
 
-
-This interactive plot corresponds to Figure 1A and Supplementary Figures 1-5 in the published article.
+This interactive plot corresponds to Figure 2A and Supplementary Figures 1-5 in the published article.
 
 ```{r setup}
 #| echo: false
@@ -33,6 +42,46 @@ data(metrics)
 endpoints <- unique(metrics$phenotype)
 ojs_define(metrics)
 ojs_define(endpoints)
+```
+
+
+```{ojs}
+//| echo: false
+//| eval: false
+
+d3 = require('d3')
+
+allResults = {
+  const results = [];
+  let hasMore = true;
+  let url = new URL("https://www.pgscatalog.org/rest/performance/search");
+  url.searchParams.set("pgp_id", "PGP000517");
+
+  while (hasMore) {
+    try {
+      const response = await d3.json(url.toString());
+
+      if (response && response.results) {
+        results.push(...response.results);
+        yield results; 
+
+        if (response.next) {
+          url = new URL(response.next); 
+        } else {
+          hasMore = false;
+        }
+      } else {
+        hasMore = false; 
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      hasMore = false;
+    }
+  }
+}
+
+
+allResults
 ```
 
 ```{ojs}
@@ -71,7 +120,6 @@ viewof endpoint = Inputs.select(endpoints, {value: "T2D", label: "Endpoint:"})
 
 viewof best_method = Inputs.toggle({ label: "Filter best method?:", values: [["best"], ["best", "notbest"]]})
 ```
-
 
 ```{ojs}
 //| echo: false

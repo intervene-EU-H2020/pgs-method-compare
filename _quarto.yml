@@ -2,7 +2,7 @@ project:
   type: website
 
 website:
-  title: "PGS method benchmarks"
+  title: "PGS methods competition"
   site-url: 'https://methodscomparison.intervenegeneticscores.org/'
   site-path: '/'
   navbar:
@@ -17,15 +17,17 @@ website:
           url:  https://github.com/intervene-EU-H2020/pgs-method-compare/issues/new
     left:
       - href: index.qmd
-        text: Home
-      - href: effect-sizes.qmd
-        text: Effect sizes
-      - href: pairwise.qmd
-        text: Pairwise comparison
+        text: About
+      - href: leaderboard.qmd
+        text: Leaderboards
       - href: meta.qmd
         text: Meta analysis
+      - href: effect-sizes.qmd
+        text: Absolute effect sizes
+      - href: relative.qmd
+        text: Relative effect sizes
       - href: tutorials.qmd
-        text: Tutorials
+        text: Tutorials and guidance
       - href: glossary.qmd
         text: Glossary
       - href: acknowledgements.qmd
