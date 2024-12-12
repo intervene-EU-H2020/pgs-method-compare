@@ -20,12 +20,12 @@ website:
         text: About
       - href: leaderboard.qmd
         text: Leaderboards
+      - href: meta.qmd
+        text: Meta analysis
       - href: effect-sizes.qmd
         text: Absolute effect sizes
       - href: relative.qmd
         text: Relative effect sizes
-      - href: meta.qmd
-        text: Meta analysis
       - href: tutorials.qmd
         text: Tutorials and guidance
       - href: glossary.qmd
