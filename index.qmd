@@ -16,7 +16,7 @@ You can view the effects sizes of each of the methods in each of the biobanks on
 
 Yes! If your methods comparison meets some criteria for how it is conducted and the data format, it can be visualised here. 
 
-The comparison needs to be conducted according to a reference standardised framework (see Guidance) and the results (scoring files, performance metrics and meta-data) to be submitted to the [PGS Catalog](https://www.pgscatalog.org/about/#eligibility).  Please open a GitHub issue to [discuss including your data](https://github.com/intervene-EU-H2020/pgs-method-compare/issues/new?assignees=&labels=&projects=&template=add-benchmark-data.md&title=).
+The comparison needs to be conducted according to a reference standardised framework (see [guidance](tutorials/guidance.qmd)) and the results (scoring files, performance metrics and meta-data) to be submitted to the [PGS Catalog](https://www.pgscatalog.org/about/#eligibility).  Please open a GitHub issue to [discuss including your data](https://github.com/intervene-EU-H2020/pgs-method-compare/issues/new?assignees=&labels=&projects=&template=add-benchmark-data.md&title=).
 
 # About polygenic scores 
 
