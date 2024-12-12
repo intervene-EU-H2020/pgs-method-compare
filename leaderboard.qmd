@@ -8,7 +8,7 @@ Instead of comparing biobanks separately, we can pool information across all of 
 
 <summary>More details</summary>
 
-<h2>Performance</h2>
+<h4>Performance</h4>
 
 <p>We meta-analysed PGS effect sizes (β) using meta-analytic mixed models. The absolute performance of PGS varied considerably between biobanks for some phenotypes.</p>
 
@@ -16,7 +16,7 @@ Instead of comparing biobanks separately, we can pool information across all of 
 
 <p>While we sometimes cannot confidently estimate the absolute performance (β) of methods across biobanks in the meta-analytical mixed model, we generally can make more accurate claims about “raw” differences in performance (βᵧ - βₓ).</p>
 
-<h2>Tuning</h2>
+<h4>Tuning</h4>
 
 <p>Many methods allow automatically setting suitable parameters without the use of phenotype data (we refer to this generally as automatic tuning). Alternatively, target data can be used to empirically determine hyperparameters on the basis of, for example, cross-validation (CV).</p>
 
