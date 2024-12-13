@@ -34,28 +34,20 @@ title: "Polygenic risk score effect sizes"
 
 This interactive plot corresponds to Figure 2A and Supplementary Figures 1-5 in the published article.
 
-```{r setup}
-#| echo: false
-#| message: false
-library(pgsCompaR)
-data(metrics)
-endpoints <- unique(metrics$phenotype)
-ojs_define(metrics)
-ojs_define(endpoints)
-```
-
-
-```{ojs}
+```{ojs setup}
 //| echo: false
-//| eval: false
+
+import { aq, op } from '@uwdata/arquero'
 
 d3 = require('d3')
 
-allResults = {
+async function* fetchPaginatedData(baseUrl, paramName, paramValue) {
   const results = [];
   let hasMore = true;
-  let url = new URL("https://www.pgscatalog.org/rest/performance/search");
-  url.searchParams.set("pgp_id", "PGP000517");
+  let url = new URL(baseUrl);
+
+  // Set the single query parameter
+  url.searchParams.set(paramName, paramValue);
 
   while (hasMore) {
     try {
@@ -63,15 +55,16 @@ allResults = {
 
       if (response && response.results) {
         results.push(...response.results);
-        yield results; 
+        yield results;
 
         if (response.next) {
-          url = new URL(response.next); 
+          hasMore = true;
+          url = new URL(response.next);
         } else {
           hasMore = false;
         }
       } else {
-        hasMore = false; 
+        hasMore = false;
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -79,9 +72,89 @@ allResults = {
     }
   }
 }
+```
+
+```{ojs}
+//| echo: false
+
+// parse performance metrics here into a consistent structure
+performanceResults = fetchPaginatedData(
+  "https://www.pgscatalog.org/rest/performance/search",
+  "pgp_id",
+  "PGP000517"
+);
+
+raw_metrics = aq.from(performanceResults)
+  .select("id", "associated_pgs_id", "sampleset", "performance_metrics")
+  .derive({
+    cohort_name_full: d => d.sampleset.samples[0].cohorts[0].name_full,
+    cohort_name_short: d => d.sampleset.samples[0].cohorts[0].name_short,
+    ancestry: d=> d.sampleset.samples[0].ancestry_broad,
+    effect_sizes: d=> d.performance_metrics.effect_sizes,
+    othermetrics: d=> d.performance_metrics.othermetrics,
+    class_acc: d=> d.performance_metrics.class_acc
+  })
+
+cols = ["id", "associated_pgs_id", "cohort_name_full", "cohort_name_short", "ancestry", "metric_type", "value", "value_ci_lower", "value_ci_upper"]
+
+effect_sizes = raw_metrics
+  .filter(d => op.length(d.effect_sizes) > 0)
+  .unroll("effect_sizes")
+  .derive({
+    metric_type: d=> d.effect_sizes.name_short,
+    value: d=> d.effect_sizes.estimate,
+    value_ci_lower: d=> d.effect_sizes.ci_lower,
+    value_ci_upper: d=> d.effect_sizes.ci_upper
+  })
+  .select(cols)
+
+othermetrics = raw_metrics
+  .filter(d => op.length(d.othermetrics) > 0)
+  .unroll("othermetrics")
+  .derive({
+    metric_type: d => d.othermetrics.name_short,
+    value: d=> d.othermetrics.estimate,
+    value_ci_lower: d=> d.othermetrics.ci_lower,
+    value_ci_upper: d=> d.othermetrics.ci_upper
+  })
+  .select(cols)
+  
+class_acc = raw_metrics
+  .filter(d => op.length(d.class_acc) > 0)
+  .unroll("class_acc")
+  .derive({
+    metric_type: d => d.class_acc.name_short,
+    value: d=> d.class_acc.estimate,
+    value_ci_lower: d=> d.class_acc.ci_lower,
+    value_ci_upper: d=> d.class_acc.ci_upper
+  })
+  .select(cols)
+
+plotData = effect_sizes.concat(othermetrics, class_acc)
+
+// TODO: calculate is_continuous from the data
+// raw_metrics
+// plotData.select("cohort").dedupe()
+```
 
 
-allResults
+```{ojs}
+//| echo: false
+
+// parse score data here including method names and tuning types
+scoreResults = fetchPaginatedData(
+  "https://www.pgscatalog.org/rest/score/search",
+  "pgp_id",
+  "PGP000517"
+);
+
+// note: method name and tuning type is extracted from the PGS names, which isn't ideal
+aq.from(scoreResults)
+  .select("id", "name")
+  .spread({ name: d => op.split(d.name, '.') }, {as: ["method_name", "tuning_type"], limit: 2})
+  
+// TODO: UKBB_EnsPGS is always CV
+// TODO: recode pt_clump_nested as pt_clump 
 ```
 
 ```{ojs}
@@ -105,130 +178,9 @@ viewof methods = Inputs.checkbox(
     sort: true, 
     unique: true }
 )
-
-viewof ancestries = Inputs.checkbox(
-  ["EUR", "SAS"],
-  { label: "Ancestry",
-    value: ["EUR", "SAS"],
-    sort: true,
-    unique: true
-  })
-
-viewof chosen_metric = Inputs.radio(new Map([["β", "BETA"], ["Area Under Curve (AUC)", "AUC"], ["Odds Ratio (OR)", "OR"], ["R²", "R2"]]), {label: "Metric", value: "BETA", disabled: disabled_metrics})
-
-viewof endpoint = Inputs.select(endpoints, {value: "T2D", label: "Endpoint:"})
-
-viewof best_method = Inputs.toggle({ label: "Filter best method?:", values: [["best"], ["best", "notbest"]]})
 ```
 
-```{ojs}
-//| echo: false
-is_continuous = aq.fromJSON(metrics)
-  .params({ endpoint: endpoint })
-  .filter((d, $) => d.phenotype == $.endpoint)
-  .sample(1, {shuffle: false})
-  .get('is_continuous')
 
-// continuous endpoints only support beta and r2 metrics
-// binary endpoints support all endpoints, r2 is recalculated later
-disabled_metrics = ({ true: ["AUC", "OR"], false: [] })[is_continuous]
-```
-
-```{ojs}
-//| echo: false
-
-beta_map = new Map([["x_label", "βₓ"], ["x", "BETA"], ["errorbar_high", "BETA_CI_HIGH"], ["errorbar_low", "BETA_CI_LOW"]])
-auc_map = new Map([["x_label", "AUC"], ["x", "AUC_MEDIAN"], ["errorbar_high", "AUC_CI_HIGH"], ["errorbar_low", "AUC_CI_LOW"]])
-r2_map = new Map([["x_label", "R²"], ["x", "r2"], ["errorbar_high", "r2_high"], ["errorbar_low", "r2_low"]])
-or_map = new Map([["x_label", "Odds Ratio"], ["x", "OR"], ["errorbar_high", "OR_CI_HIGH"], ["errorbar_low", "OR_CI_LOW"]])
-
-metrics_map = ({ "BETA": beta_map, "AUC": auc_map, "R2": r2_map, "OR": or_map })
-```
-
-```{ojs}
-//| echo: false
-//| panel: fill
-Plot.plot({
-  grid: true,
-  // make plot accessible for screen readers
-  ariaLabel: "Explanation of some stuff", // todo: fix
-  marginTop: 50,
-  marginLeft: 150,
-  marginRight: 80,
-  x: {
-    label: metrics_map[chosen_metric].get("x_label") + " →",
-    nice: true
-  },
-  y: {
-    label: "Development method"
-  },
-  // tableau10 theme, manually assigning each method a colour to be consistent
-  color: {
-    domain: ["dbslmm", "sbayesr", "lassosum", "prscs", "ldpred2", "megaprs", "pt.clump", "UKBB.EnsPRS"],
-    range: ["#5778a4", "#e49444", "#d1615d", "#85b6b2", "#6a9f58", "#e7ca60", "#a87c9f", "#f1a2a9"]
-  },
-  symbol: {
-    legend: true
-  },
-  style: {
-    fontSize: "12px"
-  },
-  facet: {
-    data: filtered, 
-    y: "bbid", 
-    x: "ancestry",
-    marginRight: 75,
-    marginTop: 50
-  },
-  fx: {
-    label: "Ancestry"
-  },
-  fy: {
-    label: "Biobank"
-  },
-  marks: [
-    Plot.frame(),
-    // link == error bar
-    Plot.link(filtered, {
-      x1: metrics_map[chosen_metric].get("errorbar_low"),
-      x2:  metrics_map[chosen_metric].get("errorbar_high"),
-      y1: "method",
-      y2: "method"
-    }),
-    Plot.dot(filtered, {
-      x:  metrics_map[chosen_metric].get("x"), 
-      y: "method",
-      fill: "method",
-      symbol: "method_type"
-    })
-  ]
-})
-```
-
-```{ojs}
-//| echo: false
-
-import { aq, op } from '@uwdata/arquero'
-
-// use arquero to dynamically filter and mutate data client-side
-filtered = aq.fromJSON(metrics)
-  .params({ biobanks: biobanks, methods: methods, ancestries: ancestries, endpoint: endpoint, best_method: best_method })
-  .filter((d, $) => op.includes($.biobanks, d.bbid) &&
-    op.includes($.ancestries, d.ancestry) &&
-    op.includes($.methods, d.method) &&
-    op.includes($.endpoint, d.phenotype))
-  .groupby(['bbid', 'ancestry', 'phenotype'])
-  .derive( { best_method: d => d.BETA == op.max(d.BETA) ? "best": "notbest" })
-  .filter((d, $) => op.includes($.best_method, d.best_method ))
-  // binary traits -> h2l (variance explained on the liability scale)
-  // continuous traits -> R2_OBS (variance explained on the observed scale)
-  // create a new r2 column which selects the correct scale
-  .derive( { 
-     r2: d => d.is_continuous ? d.R2_OBS : d.h2l,
-     r2_high: d => d.is_continuous ? d.R2_OBS_CI_HIGH : d.h2l_ci_high,
-     r2_low: d => d.is_continuous ? d.R2_OBS_CI_LOW : d.h2l_ci_low,
-   })
-```
 
 ## Conclusion
 
