@@ -74,7 +74,7 @@ async function* fetchPaginatedData(baseUrl, paramName, paramValue) {
 }
 ```
 
-```{ojs}
+```{ojs, get_performance}
 //| echo: false
 
 // parse performance metrics here into a consistent structure
@@ -129,16 +129,10 @@ class_acc = raw_metrics
     value_ci_upper: d=> d.class_acc.ci_upper
   })
   .select(cols)
-
-plotData = effect_sizes.concat(othermetrics, class_acc)
-
-// TODO: calculate is_continuous from the data
-// raw_metrics
-// plotData.select("cohort").dedupe()
 ```
 
 
-```{ojs}
+```{ojs, get_score}
 //| echo: false
 
 // parse score data here including method names and tuning types
@@ -148,39 +142,128 @@ scoreResults = fetchPaginatedData(
   "PGP000517"
 );
 
-// note: method name and tuning type is extracted from the PGS names, which isn't ideal
-aq.from(scoreResults)
-  .select("id", "name")
+// notes: method name and tuning type is extracted from the PGS names, which isn't ideal
+// recode pt_clump_nested as pt_clump
+// UKBB_EnsPGS is always CV
+scoreData = aq.from(scoreResults)
+  .select("id", "name", "trait_reported")
   .spread({ name: d => op.split(d.name, '.') }, {as: ["method_name", "tuning_type"], limit: 2})
-  
-// TODO: UKBB_EnsPGS is always CV
-// TODO: recode pt_clump_nested as pt_clump 
+  .derive({ method_name: d => d.method_name === "pt_clump_nested" ? "pt_clump" : d.method_name,
+            tuning_type: d => d.method_name === "UKBB_EnsPGS" ? "CV" : d.tuning_type })
 ```
 
-```{ojs}
+
+```{ojs, ui_elements}
 //| echo: false
 //| panel: sidebar
 
-viewof biobanks = Inputs.checkbox(
-  new Map( 
-    [["UK Biobank", "ukbb"], ["Estonia Biobank", "ebb"], ["Genes & Health", "gnh"], ["FinnGenn", "finngen"], ["HUNT", "hunt"]]),
-  { value: ["ukbb", "ebb", "gnh", "finngen", "hunt"], 
-    label: "Biobank:",
-    format: ([name, value]) => `${name} (${value})`, 
-    sort: true, 
-    unique: true }
-)
+biobank_names = plotData.select("cohort_name_full", "cohort_name_short").dedupe().objects()
+viewof biobanks = Inputs.checkbox(biobank_names, {label: "Biobank", format: x => `${x.cohort_name_full} (${x.cohort_name_short})`, value: biobank_names} )
 
-viewof methods = Inputs.checkbox(
-  ["dbslmm", "sbayesr", "lassosum", "prscs", "ldpred2", "megaprs", "pt.clump", "UKBB.EnsPRS"],
-  { value: ["dbslmm", "sbayesr", "lassosum", "prscs", "ldpred2", "megaprs", "pt.clump", "UKBB.EnsPRS"],
-    label: "Method:",
-    sort: true, 
-    unique: true }
-)
+method_names = plotData.select("method_name").dedupe().objects()
+viewof methods = Inputs.checkbox(method_names, { label: "Method:", format: x => x.method_name, value: method_names })
+
+ancestry_names = plotData.select("ancestry").dedupe().objects()
+viewof ancestries = Inputs.checkbox(ancestry_names, { label: "Genetic ancestry", format: x => x.ancestry, value: ancestry_names})
+
+// some metrics for endpoints have no data, so must be disabled in the UI
+metric_names = plotData.select("metric_type").dedupe().objects().map((x) => x.metric_type )
+all_available_metrics = plotData.select("metric_type").dedupe()
+enabled_metrics = plotData.params(endpoint).filter((d, $) => d.trait_reported == $.trait_reported).select("metric_type")
+disabled_metrics = all_available_metrics.dedupe("metric_type").antijoin(enabled_metrics, "metric_type").objects().map((x) => x.metric_type )
+
+viewof chosen_metric = Inputs.radio(metric_names, {label: "Metric", disabled: disabled_metrics, value: "β" })
+
+endpoints = plotData.select("trait_reported").dedupe().objects()
+viewof endpoint = Inputs.select(endpoints, {value: endpoints.find(t => t.trait_reported === "Type 2 diabetes (T2D)"), format: x => x.trait_reported, label: "Endpoint:"})
+
+viewof best_method = Inputs.toggle({ label: "Filter best method?:", values: [["best"], ["best", "notbest"]]})
 ```
 
+```{ojs, filter_data}
+//| echo: false
 
+// prepare pgs catalog data for plotting
+plotData = effect_sizes.concat(othermetrics, class_acc)
+  .join_left(scoreData, (a, b) => op.equal(a.associated_pgs_id, b.id), [[aq.all()], ["method_name", "tuning_type", "trait_reported"]])
+
+filtered = plotData.params({ biobanks: biobanks.map((x) => x.cohort_name_short), 
+                  methods: methods.map((x) => x.method_name),
+                  ancestry: ancestries.map((x) => x.ancestry),
+                  endpoint: endpoint.trait_reported,
+                  metric_type: chosen_metric,
+                  best_method: best_method
+  })
+  .filter((d, $) => op.includes($.biobanks, d.cohort_name_short) &&
+    op.includes($.methods, d.method_name) &&
+    op.includes($.ancestry, d.ancestry) &&
+    $.endpoint === d.trait_reported &&
+    $.metric_type == d.metric_type) 
+  .groupby(["cohort_name_short", "ancestry", "trait_reported"])
+  .derive( { best_method: d => d.value == op.max(d.value) ? "best": "notbest" })
+  .filter((d, $) => op.includes($.best_method, d.best_method ))    
+```
+
+```{ojs, plot}
+//| echo: false
+//| panel: fill
+Plot.plot({
+  grid: true,
+  // make plot accessible for screen readers
+  ariaLabel: "Explanation of some stuff", // todo: fix
+  marginTop: 50,
+  marginLeft: 150,
+  marginRight: 80,
+  x: {
+    label: chosen_metric + " →",
+    nice: true
+  },
+  y: {
+    label: "Development method"
+  },  
+  // tableau10 theme, manually assigning each method a colour to be consistent
+  color: {
+    domain: ["dbslmm", "sbayesr", "lassosum", "prscs", "ldpred2", "megaprs", "pt_clump", "UKBB_EnsPGS"],
+    range: ["#5778a4", "#e49444", "#d1615d", "#85b6b2", "#6a9f58", "#e7ca60", "#a87c9f", "#f1a2a9"]
+  },
+  symbol: {
+    legend: true
+  },
+  style: {
+    fontSize: "12px"
+  },
+  facet: {
+    data: filtered, 
+    y: "cohort_name_short", 
+    x: "ancestry",
+    marginRight: 75,
+    marginTop: 50
+  },
+  fx: {
+    label: "Genetic ancestry"
+  },
+  fy: {
+    label: "Biobank"
+  },
+  marks: [
+    Plot.frame(),
+    // link == error bar
+    Plot.link(filtered, {
+      x1: "value_ci_lower",
+      x2: "value_ci_upper",
+      y1: "method_name",
+      y2: "method_name"
+    }),
+    Plot.dot(filtered, {
+      x: "value", 
+      y: "method_name",
+      fill: "method_name",
+      symbol: "tuning_type"
+    })
+  ]
+})
+
+```
 
 ## Conclusion
 
