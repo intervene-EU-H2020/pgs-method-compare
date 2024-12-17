@@ -8,6 +8,7 @@ website:
   site-url: 'https://methodscomparison.intervenegeneticscores.org/'
   site-path: '/'
   navbar:
+    logo: "img/logo.png"  
     tools:
     - icon: twitter
       href: https://twitter.com/intervene_eu
