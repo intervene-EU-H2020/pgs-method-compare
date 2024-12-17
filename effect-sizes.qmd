@@ -34,6 +34,14 @@ title: "Polygenic risk score effect sizes"
 
 This interactive plot corresponds to Figure 2A and Supplementary Figures 1-5 in the published article.
 
+
+::: {.callout-tip}
+
+We're fetching score and performance metadata from the [PGS Catalog](https://www.pgscatalog.org/rest/). It might take a few seconds to fully load!
+
+:::
+
+
 ```{ojs setup}
 //| echo: false
 
