@@ -1,6 +1,8 @@
 project:
   type: website
 
+# see https://ucsb-meds.github.io/customizing-quarto-websites for lots of helpful tips
+
 website:
   title: "PGS methods competition"
   site-url: 'https://methodscomparison.intervenegeneticscores.org/'
@@ -32,16 +34,16 @@ website:
         text: Glossary
       - href: acknowledgements.qmd
         text: Acknowledgements
-  page-footer: |
-    This project has received funding from the European Union’s Horizon 2020 research and innovation programme under grant agreement No 101016775
 
 format:
   html:
-    theme: cosmo
-    css: styles.css
+    theme: styles.scss
+    css: [https://assets.emblstatic.net/vf/v2.5.20/css/styles.css, styles.css]
+    mainfont: IBM Plex Sans
     toc: true
     doi: 10.1016/j.ajhg.2024.06.003
     date-modified: today
+    include-after-body: footer.html
     
 editor: visual
 
